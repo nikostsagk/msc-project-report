@@ -96,9 +96,24 @@ Faster R-CNN's greatest success is that it consists of a single-stage end-to-end
 
 
 \section{Single-Stage Detectors}
-The downside of double-stage detectors is that training time is split in two separate parts, the region proposal and the detection part, hindering real-time detection. Single-stage detectors or \textbf{\textit{regression/classification based detectors}} have the advantage of being really fast. The main reason is that instead of making class predictions and refining bounding boxes on already proposed regions, apply global rules in every pixel inferring relevant detections without intermediate mechanisms. In this category, the most important algorithms are the Single Shot MultiBox Detector (SSD, \cite{liu2016ssd}), the YOLO model (\cite{redmon2016you}) and RetinaNet (\cite{lin2017focal}) and will synopsised in the next pages.
+The downside of double-stage detectors is that training time is split in two separate parts, the region proposal and the detection part, hindering real-time detection. Single-stage detectors or \textbf{\textit{regression/classification based detectors}} have the advantage of being really fast. The main reason is that instead of making class predictions and refining bounding boxes on already proposed regions, apply global rules in every pixel inferring relevant detections without intermediate mechanisms. In this category, the most important algorithms are the SSD (\cite{liu2016ssd}), the YOLO model (\cite{redmon2016you}) and RetinaNet (\cite{lin2017focal}) and will synopsised in the next pages.
  
  \subsection{YOLO}
+ YOLO, developed by \cite{redmon2016you} (followed by the improved versions of YOLOv2 \cite{redmon2017yolo9000} and YOLOv3 \cite{redmon2018yolov3}) is a model known for its rapid inference 
+ rates ranging between 20-220FPS (depending the backbone implementation) based entirely on Darknet; a network developed by Redmon.
+ 
+ The idea behind YOLO is to obtain detections from each pixel instead of relying on region proposal methods. An image $H\times W$ is fed into the backbone network and the output is an activation feature map of size $S\times S$. Each pixel in the given feature map, represents an area in the original image of $\frac{H}{S} \times \frac{W}{S}$. Also, each cell on the grid is responsible for detecting an object that has its center on that cell. For example, if an object lies in the bottom right corner of the original image, pixel $(0,S)$ on the feature map, is responsible for its detection. If an object lies in the middle of the image, pixel $(\frac{S}{2},\frac{S}{2})$ is responsible for its detection. 
+ 
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=12cm]{images/ch2/fig5.png}
+  \caption{A schematic representation of how grid cells detect objects. Reproduced from \cite{redmon2016you}.}
+  \label{fig5}
+\end{figure} 
+ 
+The actual size of the feature map sized $S\times S$ is a five-tuple $S\times S \times B\times(5+C)$ tensor, where 5 in parentheses implies four coordinates and an objectness score, C is an one-hot encoded vector which indicates the class and B is the number of different detections. As a matter of fact, each cell makes B predictions of arbitrary size and the final detection is the one with the biggest $p_obj$ confidence score. The last layer produces a conditional probability $p(c_i|obj)$ and the refined bounding box.
+
+The next versions of YOLO, could make predictions in intermediate layers (from feature maps of different size) enabling detection in various scales. 
  
 \subsection{SSD}
 
