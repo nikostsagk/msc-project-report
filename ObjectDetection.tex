@@ -116,7 +116,17 @@ The actual size of the feature map sized $S\times S$ is a five-tuple $S\times S 
 The next versions of YOLO, could make predictions in intermediate layers (from feature maps of different size) enabling detection in various scales. 
  
 \subsection{SSD}
+Single Shot Detector (or SSD) was published right after YOLO, by \cite{liu2016ssd} and aimed to solve YOLO problems. SSD follows an architecture based on VGG16 (as Faster R-CNN) and operates as YOLO. The first version of Redmon's detector had difficulties detecting objects in different scales due to multiple pooling layers, thus SSD was aiming to fix this. 
 
+Regarding its architecture, an additional network is attached right after the fifth convolutional block of the VGG16. Classification and regression happens on several feature maps of different size from finer to coarser resolutions. Moreover, grid cells, instead of predicting the conditional class probability $p(c_i|obj)$, predict $p(c_i)$, thus it is necessary the introduction of one more class that acts as background. While SSD could achieved higher mAP than YOLO with similar detection rates and could detect objects in multiple scales, it was facing difficulties in small object detection but this could be relieved by altering the backbone network. Figure \ref{fig6} shows an overview of the model.
+ 
+ \begin{figure}[!htb]
+  \centering
+  \includegraphics[width=12cm]{images/ch2/fig6.png}
+  \caption{A comparison between SSD and YOLO architectures. Reproduced from \cite{liu2016ssd}.}
+  \label{fig6}
+\end{figure} 
+ 
 \subsection{RetinaNet}
 
 \section{The Accuracy/Speed Trade-Off}
