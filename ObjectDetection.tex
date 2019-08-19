@@ -242,8 +242,43 @@ In fact, instead of featurising the output layers in each convolutional block, R
 \subsection{Anchor boxes}
 RetinaNet, adapts the anchor boxes concept to produce RoIs in contrast with the FPN which uses a region proposal network. Due to the number of pooling operations every pyramidal level has underwent, the stride in each $P_i$ layer is $(8, 16, 32, 64, 128)$\footnote{$P_3$ has already been pooled 3 times from block$_1$, block$_2$ and block$_3$, thus it has a stride of $2^3$.}. The effective receptive field of each layer is crucial and act as a limiting factor for the size of the anchors and the size of the detected object as a consequence; stride on the other hand, indicates the density of the predictions. However, in RetinaNet this is not completely true as each $P_i$ is product of many layer outputs, from various depths with different receptive fields. In general, spatially large $P_i$ features aim in dense small object detection, while coarser $P_i$ maps are responsible for large object detection. Specifically, each layer has anchors in three scales and three ratios. Anchor's base size is $(32^2, 64^2, 128^2, 256^2, 512^2)$ with scales $(2^0, 2^{1/3}, 2^{2/3})$ and ratios of $(1\!:\!2,1\!:\!1,2\!:\!1)$.
 
-\subsection{Prediction network}
+\subsection{Prediction subnet}
+The subnetwork responsible for detections consist of a \textbf{classification subnet} and a \textbf{box regression subnet}. The classification subnet predicts $p(c_i)$, out of K classes, in each anchor position and is nothing more than 4 stacked $3\times3\times C$ convolutional kernels with ReLU activations, followed by  $3\times3\times KA$ with sigmoid activation. C is the channel depth of $P_i$ and is the same all layers.
+
+The class agnostic box regression subnet, follows the same logic with 4 stacked $3\times3\times C$ convolutional kernels with ReLU activations, followed by $3\times3\times 4A$ with sigmoid activation. The output is a four-tuple for every anchor position with the refined bounding box. The prediction subnet shares its parameters across all pyramidal $P_i$ outputs, following the same philosophy as SSD.
 
 \section{Evaluation Metrics}
+Object detection has several evaluation metrics, however performance comparisons depend on the problem. For example in the PASCAL VOC challenge, models compete between those with the highest mAP, while in the apple detection problem a model with higher F1-score is more accurate. However the most useful metrics are:
 
+\bigskip
+\textbf{Recall}
+\bigskip\noindent
+\begin{equation}
+  \text{Recall} = \frac{TP}{TP+FN}=\frac{TP}{\text{Num. of objects}}
+\end{equation} 
+Recall is the fraction between successfully detected instances and the number of instances.
+
+\bigskip
+\textbf{Precision}
+\bigskip\noindent
+\begin{equation}
+  \text{Precision} = \frac{TP}{TP+FP}=\frac{TP}{\text{Predictions}}
+\end{equation} 
+Precision gives the ability of the model identifying only the relevant instances as it gets lower for every wrong prediction.
+
+\bigskip
+\textbf{F1-score}
+\bigskip\noindent
+\begin{equation}
+  \text{F1-score} = 2\times\frac{\text{Precision}\times \text{Recall}}{\text{Precision}+\text{Recall}}\end{equation} 
+F1-score is the harmonic mean between precision in recall, giving equal importance in both. It is mostly used in tasks where the model should find the best ratio between true positives and false positives. Changing detector's confidence threshold comes with an expense in the rate of true positives along with the rate of false negatives. F1-score indicates the point in the precision-recall curve where precision and recall have the maximum values.
+
+%\bigskip
+%\textbf{Average Precision}
+%\bigskip\noindent
+%Average precision is the area under curve (AUC) of the precision - recall curve. The PR curve follows usually a zigzag pattern complicating its calculation. \cite{everingham2010pascal}, proposed an alternative way in its calculation by interpolating precision in 11 evenly space points. The precision at each recall level takes the maximum value in order to eliminate the zigzag pattern.
+%\begin{equation}
+%  \text{AP} = \frac{1}{11}\sum_{r\in\{0,0.1,...,1\}}p_{interp}(r) \\
+%  p_{interp}(r)=\max_{\hat{r}:\hat{r}\geq r}p(\hat{r})
+%\end{equation} 
 \dots
