@@ -2,7 +2,7 @@
 %% Thesis.tex
 %% ---------------------------------------------------------------- 
 \documentclass{ecsthesis}      % Use the Thesis Style
-\graphicspath{{../Figures/}}   % Location of your graphics files
+\graphicspath{{../figures/}}   % Location of your graphics files
 \usepackage{natbib}            % Use Natbib style for the refs.
 \hypersetup{colorlinks=true}   % Set to false for black/white printing
 \input{Definitions}            % Include your abbreviations
@@ -14,7 +14,7 @@
              {\href{mailto:n.tsagko@gmail.com}{Nikolaos Chrysovalantis Tsagkopoulos}}
              {Nikolaos Chrysovalantis Tsagkopoulos}
             }
-\addresses  {\groupname\\\deptname\\\univname}
+\addresses  {\groupname\\\deptname\\\univname}
 \date       {\today}
 \subject    {}
 \keywords   {}
@@ -28,29 +28,40 @@ This work is all about \dots
 %\lstlistoflistings
 \listofsymbols{ll}{
 $2D$ & two dimensional \\
-$AUC$ & Area Under Curve \\
-$CNN$ & Convolutional Neural Network \\
-$FP$ & False Positive \\
-$FN$ & False Negative \\
-$GPU$ & Graphical Processing Unit \\
-$mAP$ & mean Average Precision \\
-$MLP$ & Multi-Layer Perceptron \\
+$AUC$ & area under curve \\
+$CCD$ & charge-coupled device \\
+$CNN$ & convolutional neural network \\
+$CRF$ & conditional random field \\
+$FCN$ & fully convolutional network \\
+$FN$ & false negative \\
+$FP$ & false positive \\
+$GMM$ & Gaussian mixture models \\
+$GPS$ & global positioning system \\
+$GPU$ & graphical processing unit \\
+$HSV$ & Hue, Saturation and Value \\
+$IoU$ & Intersection over Union \\
+$mAP$ & mean average precision \\
+$MLP$ & multi-layer perceptron \\
+$NIR$ & near infra-red \\
+$NMS$ & non-maximum suppression \\
+$PCA$ & principal component analysis \\
 $ReLU$ & Rectified Linear Unit \\
-$RGB$ & Red Green Blue \\
+$RGB$ & Red, Green and Blue \\
 $RoI$ & Region of Interest \\
-$RPN$ & Region Proposal Network \\
-$SGD$ & Stochastic Gradient Descent \\
-$SVM$ & Support Vector Machine \\
-$TP$ & True Positive \\
-$TN$ & True Negative \\
+$RPN$ & region proposal network \\
+$SGD$ & stochastic gradient descent \\
+$SVM$ & support vector machine \\
+$TN$ & true negative \\
+$TP$ & true positive \\
+$WS$ & watershed segmentation \\
 }
+
 %\acknowledgements{Thanks to no one.}
 %\dedicatory{To \dots}
 \mainmatter
 %% ----------------------------------------------------------------
 \include{Introduction}
 \include{ObjectDetection}
-\include{AppleDetection}
 \include{Experiment}
 \include{ResultsAndDiscussion}
 \include{Conclusion}
