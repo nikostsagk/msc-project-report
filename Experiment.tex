@@ -46,7 +46,7 @@ The data augmentation techniques used were along with the natural variations of 
 \subsection{Anchor Boxes Configuration}
 Instead of using the default anchor boxes' base size, ratios and scales, a common practice used in anchor-based detection pipelines (\cite{redmon2017yolo9000}, \cite{redmon2018yolov3}) is to use k-means clustering, over the dataset where the $k$ centroids' width and height define anchors' base size. Nonetheless, this practice cannot be adopted in this dataset, as the variance among the size of the fruits is small enough, and all centroids would have similar dimensions.
 
-However, the anchor configurations are optimised through a differential evolution search algorithm (\cite{storn1997differential}) as in \cite{zlocha2019improving}. The algorithm starts with the default anchor configuration: base size = $(32, 64, 128, 256, 512)$, ratios = $(1\!:\!2, 1\!:\!1, 2\!:\!1)$ and scales = $(2^{0}, 2^{1/3}, 2^{2/3})$ and through candidate populations try to minimise the distance = $1 - IoU_{avg.}$, that is to maximise the average overlap between anchors and ground truth boxes. For computational efficiency, the algorithm considers only reciprocal ratios = $(1/x, 1, x/1)$ on the validation dataset. \tref{tab2} summarises the proposed anchor configuration. \\
+However, the anchor configurations are optimised through a differential evolution search algorithm (\cite{storn1997differential}) as in \cite{zlocha2019improving}. The algorithm starts with the default anchor boxes' configuration: $\text{base size} = (32^2, 64^2, 128^2, 256^2, 512^2)$, $\text{ratios} = (1\!:\!2, 1\!:\!1, 2\!:\!1)$ and $\text{scales} = (2^{0}, 2^{1/3}, 2^{2/3})$ and through candidate populations try to minimise the distance = $1 - IoU_{avg.}$, that is to maximise the average overlap between anchors and ground truth boxes. For computational efficiency, the algorithm considers only reciprocal ratios = $(1/x, 1, x/1)$ on the validation dataset. \tref{tab2} summarises the proposed anchor configuration. \\
 
 \begin{table}[!htb]
   \centering
@@ -54,13 +54,13 @@ However, the anchor configurations are optimised through a differential evolutio
   \toprule
   \multicolumn{2}{c}{\textbf{Anchor Settings}} \\
   \midrule
-base size	& 	$(32^2, 64^2, 128^2, 256^2, 512^2)$ \\
+base size	& 	\small{$(32^2, 64^2, 128^2, 256^2, 512^2)$} \\
 stride 	& 	$(8, \ 16, \ 32, \ 64, \ 128)$ \\
 ratios  	&	$(0.805, \ \ 1.0, \ \ 1.242)$ \\
 scales  	& 	$(0.696, \ \ 1.0, \ \ 1.313)$ \\
   \bottomrule
   \end{tabular}
-  \caption{The suggested anchor configuration proposed by the differential evolution search algorithm. The average IoU between anchor boxes and ground truth, is 0.994.}
+  \caption{The suggested anchor boxes' configuration proposed by the differential evolution search algorithm. The average IoU between anchor boxes and ground truth, is 0.994.}
   \label{tab2}
 \end{table}
 
@@ -81,9 +81,9 @@ scales  	& 	$(0.696, \ \ 1.0, \ \ 1.313)$ \\
 \end{figure}
 
 \subsection{Hyper-parameter Selection}
-The IoU threshold to consider a detection as a true positive was set equal to $IoU_{th} = 0.2$ (as in \cite{bargoti2017deep} to perform valid comparisons), unless otherwise stated. The confidence score for the proposed detections was set as $p(c_i) > 0.05$ and the $\text{NMS}_{th}$ was set equal to 0.3 as it found out to be the best after experimentation. To save computation time the maximum proposed detections allowed was set to be 100. 
+The IoU threshold to consider a detection as a true positive was set equal to $IoU_{th} = 0.2$ (as in \cite{bargoti2017deep} to perform valid comparisons), unless otherwise stated. The confidence score for the proposed detections was set as $p(c_i) > 0.05$ and the $\text{NMS}_{th}$ was set equal to 0.3 as it found out to be the best after experimentation. To save computation time, the maximum proposed detections allowed was set to be 100. 
 
-Lastly, concerning the loss function, tweaking $\alpha$ and $\gamma$ did not yield any difference in performance, so the default parameters $\alpha=0.25$ and $\gamma=2$ were adopted. A notable remark is that the loss function found to be very unstable during training, and the reason was the normalisation parameters, which they take as values the total number of instances in the image. This behaviour was a result of the Fruit/Img. deviation as it can be found in \tref{tab1} very large. To tackle this issue, the normalisation factor was modified, taking values from an exponential moving average of the total instances in the samples.
+Lastly, concerning the loss function, tweaking $\alpha$ and $\gamma$ did not yield any difference in performance, so the default parameters $\alpha=0.25$ and $\gamma=2$ were adopted. A notable remark is that the loss function found to be very unstable during training, and the reason was the normalisation parameters, which they take values equal to traintr'''the total number of instances in the image. This behaviour was a result of the Fruit/Img. deviation as it can be found in \tref{tab1} very large. To tackle this issue, the normalisation factor was modified, taking values from an exponential moving average of the total instances in the samples.
  
 \subsection{Proposed Architectures}
 
