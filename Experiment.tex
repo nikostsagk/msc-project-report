@@ -2,12 +2,12 @@
 %% Experiment.tex
 %% ---------------------------------------------------------------- 
 \chapter{RetinaNet Deployment} \label{Chapter:Experiment}
-This chapter covers an analytical, detailed review upon the system deployment, the proposed architectures and the hyper-parameter selection accompanied with the respective reasoning behind every choice. It also presents how performance scales in function with the dataset training size. Later proceeds to overall tuning with the most appropriate hyper-parameter values to obtained peak detection and counting.
+This chapter presents a detailed and analytical description of the system deployment, the proposed architectures and the hyper-parameter selection accompanied by the respective reasoning behind every choice. It is also investigated, how performance scales in function with the dataset training size. Finally, peak detection and counting is achieved by optimising the hyper-parameters of the final pipeline.
 
 \section{Dataset Description}
-The authors of the papers \cite{bargoti2017image} and \cite{bargoti2017deep} introduced the dataset used in this study and is provided through the Australian Centre or Field Robotics (ACFR), The University of Sydney\footnote{\url{http://data.acfr.usyd.edu.au/ag/treecrops/2016-multifruit/}}. The images were collected using the platform "Shrimp", an unmanned ground vehicle in apple, mango and almond orchards. However, in this study, only the apple subset was used.
+The dataset used in the present thesis, was released in the work of \cite{bargoti2017image} and \cite{bargoti2017deep} and is provided through the Australian Centre or Field Robotics (ACFR), The University of Sydney\footnote{\url{http://data.acfr.usyd.edu.au/ag/treecrops/2016-multifruit/}}. The images were collected using the platform "Shrimp", an unmanned ground vehicle in apple, mango and almond orchards. However, in this study, only the apple subset is used.
 
-Precisely, the dataset consists of random crops from images that span entire trees, trellised in the orchard block. The total number of apple instances in the images represents the total number of fruits in the orchard block. The split in training, validation and test set follows the proposed split from authors' previous work, to provide valid comparisons with the previous literature work. \tref{tab1} summarises an overview of the dataset.
+Specifically, the dataset consists of random crops from images that span entire trees, trellised in the orchard block. The total number of apple instances in the images represents the total number of fruits in the orchard block. The split in training, validation and test set follows the proposed split from authors' previous work, to provide valid comparisons with the previous literature work. An overview of the dataset is presented in \tref{tab1}.
 
 \begin{table}[!htb]
   \centering
@@ -29,24 +29,48 @@ Precisely, the dataset consists of random crops from images that span entire tre
 
 The dataset provides circular annotations for the fruits; thus, they were converted to squares with the same width and height. Instead of discarding annotations that exceed the borders of the image, they were clipped to fit the image.
  
+ \begin{figure}[!htb]
+  \centering
+  \subfigure[]{
+    \includegraphics[width=0.30\textwidth]{figures/ch3/fig1_1.png}
+    \label{fig1_1}
+  }
+  \subfigure[]{
+    \includegraphics[width=0.30\textwidth]{figures/ch3/fig1_2.png}
+    \label{fig1_2}
+  }
+  
+    \subfigure[]{
+    \includegraphics[width=0.30\textwidth]{figures/ch3/fig1_3.png}
+    \label{fig1_3}
+  }
+  \subfigure[]{
+    \includegraphics[width=0.30\textwidth]{figures/ch3/fig1_4.png}
+    \label{fig1_4}
+  }
+  \caption{Typical samples from the ACFR dataset: A sample with (a) well-separated apples, (b) some unannotated instances and 
+  		(c) poor lighting conditions. (d) NMS suppresses all predictions with $\text{IoU}\geq\text{NMS}_{th}$ apart from the one with the biggest confidence.}
+  \label{fig1}
+\end{figure}
+ 
 \section{Proposed Deployment and Configuration}
 \subsection{Hardware and Software specifications}
-The deployment was set up on the Keras (\cite{chollet2015keras}) implementation of RetinaNet, provided by Fizyr\footnote{\url{https://github.com/fizyr/keras-retinanet}} and trained using a single NVIDIA Ge Force GTX 1080 Ti provided by the Iridis 5\footnote{\url{https://www.southampton.ac.uk/isolutions/staff/iridis.page}} Computer Cluster. Appendix \ref{pack_versions} includes the complete list with the packages' versions. The repository can be found in \url{https://github.com/nikostsagk/Apple-detection}.
+The deployment was set up on the Keras (\cite{chollet2015keras}) implementation of RetinaNet, provided by Fizyr\footnote{\url{https://github.com/fizyr/keras-retinanet}} and trained using a single NVIDIA GeForce GTX 1080 Ti provided by the Iridis 5\footnote{\url{https://www.southampton.ac.uk/isolutions/staff/iridis.page}} Computer Cluster. Appendix \ref{pack_versions} includes the complete list with the packages' versions. The repository can be found in \url{https://github.com/nikostsagk/Apple-detection}.
 
 \subsection{Training Details}
-The models were trained for 30 epochs of 2000 steps each with $\text{batch size} = 1$. Regarding the optimiser, ADAM (\cite{kingma2014adam}) was used, with an initial learning rate of $10^{-5}$, decreased later by a factor of 10 on epoch 15 and again on 25. It was observed that the models did not show any signs of overfitting as the performance on the validation set was increasing until it stabilised around its maximum value; meanwhile, the validation loss was fluctuating around a minimum value. All models were initialised on the ImageNet VGG16 pre-trained weights unless otherwise stated. 30 epochs of training time took around 80-90 minutes for each model, but the performance had reached its peak from the first 5 epochs.
+All models were trained on the complete training set, consisting of 896 images, while performance was monitored with respect to the validation set. Performance metrics presented below refer to the test set.
 
-All models were trained on the training set monitoring performance on the validation set. Performance metrics stated here, refer to performance on the test set unless otherwise indicated.
+The models were trained for 30 epochs of 2000 steps each with $\text{batch size} = 1$. Regarding the optimiser, ADAM (\cite{kingma2014adam}) was used, with an initial learning rate of $10^{-5}$, decreased later by a factor of 10 on epoch 15 and again on 25. It was observed that the models did not exhibit any signs of overfitting as the performance on the validation set was increasing until it stabilised around its maximum value; meanwhile, the validation loss was fluctuating around a minimum value. All models were initialised on the ImageNet VGG16 pre-trained weights unless otherwise stated. 30 epochs of training time took around 80-90 minutes for each model, but the performance had reached its peak from the first 6 epochs.
 
 \subsection{Data Augmentation \& Preprocessing}
-Originally, RetinaNet was trained on images with a minimum side of 800. Therefore, first tries adopted this strategy, keeping the ratio unchanged (e.g. $800\times1220)$. Later, to save upon training and inference time, a resolution of $512\times781$ was proposed ensuring that at least one pixel can represent a fruit in the last layer (P7). Finally, the resolution utilised in all models was the original $202\times308$ as no model showed any gain in performance with higher resolutions. By adopting the original resolution, there are considerable earnings in training and inference time giving the opportunity to train multiple models.
+Originally, RetinaNet was trained on images with a minimum side of 800. Therefore, first tries adopted this strategy, keeping the ratio unchanged (e.g. $800\times1220)$. Later, a resolution of $512\times781$ was proposed, in order to save training and inference time, ensuring at the same time that at least one pixel can represent a fruit in the last layer (P7). Finally, the resolution utilised in all models was the original $202\times308$ as no model showed any gain in performance with higher resolutions. By adopting the original resolution, there are considerable benefits in training and inference time, allowing training multiple models.
 
-The data augmentation techniques used were along with the natural variations of the dataset. Specifically, the augmentations included random flipping along the x-axis with 0.5 chance and random photometric transformations such as \textit{Fancy PCA} (as described in \cite{taylor2017improving}), changes in brightness/contrast, and finally changes in the HSV colour space. Instead of expanding the dataset before training begins, each sample is randomly undergoing a random augmentation during training, avoiding pre-calculations. Besides the augmentation, the ImageNet mean values were subtracted from the dataset as the VGG16 was initially trained that way.
+The data augmentation techniques used were along with the natural variations of the dataset. Specifically, the augmentations included random flipping along the x-axis with 0.5 chance and random photometric transformations such as \textit{Fancy PCA} (as described in \cite{taylor2017improving}), changes in brightness/contrast and changes in the HSV colour space. Instead of expanding the dataset before training begins, each sample is randomly transformed during training, avoiding pre-calculations. Besides the augmentation, the ImageNet mean values were subtracted from the dataset, as the VGG16 was initially trained that way.
 
 \subsection{Anchor Boxes Configuration}
-Instead of using the default anchor boxes' base size, ratios and scales, a common practice used in anchor-based detection pipelines (\cite{redmon2017yolo9000}, \cite{redmon2018yolov3}) is to use k-means clustering, over the dataset where the $k$ centroids' width and height define anchors' base size. Nonetheless, this practice cannot be adopted in this dataset, as the variance among the size of the fruits is small enough, and all centroids would have similar dimensions.
+Instead of using the default anchor boxes' base size, ratios and scales, a common practice used in anchor-based detection pipelines (\cite{redmon2017yolo9000}, \cite{redmon2018yolov3}) is k-means clustering. The dataset is divided in $k$ clusters, where the $k$ centroids' width and height define anchors' base size. Nonetheless, this practice cannot be adopted in the present dataset. In such case, all anchors would have similar dimensions, due to the very small variance among the size of the fruits.
 
-However, the anchor configurations are optimised through a differential evolution search algorithm (\cite{storn1997differential}) as in \cite{zlocha2019improving}. The algorithm starts with the default anchor boxes' configuration: $\text{base size} = (32^2, 64^2, 128^2, 256^2, 512^2)$, $\text{ratios} = (1\!:\!2, 1\!:\!1, 2\!:\!1)$ and $\text{scales} = (2^{0}, 2^{1/3}, 2^{2/3})$ and through candidate populations try to minimise the distance = $1 - IoU_{avg.}$, that is to maximise the average overlap between anchors and ground truth boxes. For computational efficiency, the algorithm considers only reciprocal ratios = $(1/x, 1, x/1)$ on the validation dataset. \tref{tab2} summarises the proposed anchor configuration. \\
+However, the anchor configurations are optimised through a differential evolution search algorithm (\cite{storn1997differential}) as in \cite{zlocha2019improving}. The algorithm starts with the default anchor boxes' configuration: $\text{base size} = (32^2, 64^2, 128^2, 256^2, 512^2)$, $\text{ratios} = (1\!:\!2, 1\!:\!1, 2\!:\!1)$ and $\text{scales} = (2^{0}, 2^{1/3}, 2^{2/3})$ and through candidate populations try to minimise the distance = $1 - IoU_{avg.}$. Hence, the average overlap between anchors and ground truth boxes is maximised. For computational efficiency, the algorithm considers only reciprocal ratios = $(1/x, 1, x/1)$ on the validation dataset. \tref{tab2} summarises the proposed anchor configuration. \\
 
 \begin{table}[!htb]
   \centering
@@ -64,30 +88,150 @@ scales  	& 	$(0.696, \ \ 1.0, \ \ 1.313)$ \\
   \label{tab2}
 \end{table}
 
- \fref{fig1} illustrates how anchor boxes' area spans the distribution of on the training and validation annotations' area. It is evident that the anchors coming only from the two first layers are enough and span the dataset adequately. A reasonable question would be why the anchor box base size is not reduced even further to span the entire dataset more densely? The reason is that deeper layers, have larger receptive fields and are responsible for the detection of bigger objects; furthermore, the stride increases rapidly in deeper pyramid layers thus smaller anchors would not be able to span the entire feature map densely. This observation justifies the curiosity in exploring shallower alternatives of the original model.
+ \fref{fig1} illustrates how anchor boxes' area spans the distribution of the training and validation annotations' area. It is evident that the anchors of the first two layers are enough to regress the dataset adequately. A reasonable question would be why the anchor box base size is not reduced even further to span the entire dataset more densely? The asnwer is that deeper layers, have larger receptive fields and are responsible for the detection of bigger objects; furthermore, the stride increases rapidly in deeper pyramid layers. Thus, smaller anchors would not be able to span the entire feature map densely. This observation further enhances the interest towards exploring shallower alternatives of the original model.
  
 \begin{figure}[!htb]
   \centering
   \subfigure[Training dataset.]{
-    \includegraphics[width=0.45\textwidth]{figures/ch3/fig1_1.png}
-    \label{fig1_1}
+    \includegraphics[width=0.45\textwidth]{figures/ch3/fig2_1.pdf}
+    \label{fig2_1}
   }
   \subfigure[Validation dataset.]{
-    \includegraphics[width=0.45\textwidth]{figures/ch3/fig1_2.png}
-    \label{fig1_2}
+    \includegraphics[width=0.45\textwidth]{figures/ch3/fig2_2.pdf}
+    \label{fig2_2}
   }
-  \caption{The annotation boxes' area distribution, along with the scaled optimised anchor boxes. It can be seen that the anchors coming from the last 3 layers are almost redundant.}
-  \label{fig1}
+  \caption{The annotation boxes' area distribution, along with the scaled optimised anchor boxes. It can be seen that the anchors of the last 3 layers are almost redundant.}
+  \label{fig2}
 \end{figure}
 
 \subsection{Hyper-parameter Selection}
-The IoU threshold to consider a detection as a true positive was set equal to $IoU_{th} = 0.2$ (as in \cite{bargoti2017deep} to perform valid comparisons), unless otherwise stated. The confidence score for the proposed detections was set as $p(c_i) > 0.05$ and the $\text{NMS}_{th}$ was set equal to 0.3 as it found out to be the best after experimentation. To save computation time, the maximum proposed detections allowed was set to be 100. 
+The IoU threshold to consider a detection as a true positive was set equal to $IoU_{th} = 0.2$ (as in \cite{bargoti2017deep} to perform valid comparisons). The confidence score for the proposed detections was set as $p(c_i) > 0.05$ and the $\text{NMS}_{th}$ was set equal to 0.3, as it found out to be the best after experimentation. To save computation time the maximum proposed detections allowed was set to be 100. 
 
-Lastly, concerning the loss function, tweaking $\alpha$ and $\gamma$ did not yield any difference in performance, so the default parameters $\alpha=0.25$ and $\gamma=2$ were adopted. A notable remark is that the loss function found to be very unstable during training, and the reason was the normalisation parameters, which they take values equal to traintr'''the total number of instances in the image. This behaviour was a result of the Fruit/Img. deviation as it can be found in \tref{tab1} very large. To tackle this issue, the normalisation factor was modified, taking values from an exponential moving average of the total instances in the samples.
+Finally, concerning the loss function, tweaking $\alpha$ and $\gamma$ did not yield any difference in performance, so the default parameters $\alpha=0.25$ and $\gamma=2$ remained unchanged. A notable remark is that the loss function was found to be very unstable during training. The reason was that the normalisation parameters take values equal to the total number of the instances in the image. This behaviour is a result of the increased variance exhibited by the Fruit/Img., as can be seen in \tref{tab1}. To tackle this issue, the normalisation factor was modified, taking values from an exponential moving average of the total instances in the samples.
  
 \subsection{Proposed Architectures}
+RetinaNet network exploits the inherent multi-scale, pyramidal hierarchy of the backbone network making predictions in multiple scales. Deeper layers capture higher levels of abstraction, making coarser feature maps semantically stronger comparing to finer feature maps. Rougher feature maps are also useful for predicting bigger objects due to their receptive field. \fref{fig1} shows that detection from higher pyramidal levels might be redundant. The proposed architectures explore the depth impact of the backbone through the VGG11, VGG13, VGG16 and VGG19 architectures, and the topology of the side network of RetinaNet, responsible for the detection part. An optimised network can reduce even further inference time, decrease the network's number of parameters and reduce the need in computational resources such as memory requirements, while maintaining maximum performance.
 
-\section{VGG Architectures Comparisons}
+\subsubsection{Architecture - Original}\label{arch_1} 
+The first architecture is the original RetinaNet, making predictions from the 5 pyramidal levels $(P3,P4,P5,P6,P7)$. P3, P4 and P5, are obtained via lateral connections right after the corresponding VGG blocks (reduced in the fixed depth of $\times256$) and are semantically richer due to the right-left pathway in \fref{fig2}. P6 and P7 are coming from strided convolutions of $3\times3$ single convolutional blocks and are not upsampled.
+
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/ch3/fig3.pdf}
+  \caption{The original RetinaNet pipeline. No. of parameters: 8.7M (without VGG).}
+  \label{fig3}
+\end{figure} 
+
+\subsubsection{Architecture - $\text{P}_3\text{P}_4\text{P}_5$}\label{arch_2}
+The second architecture follows the original RetinaNet structure, without utilising P6 and P7 at all. P3, P4, P5 still follows the upsampling-merging technique. The main difference is that it is not capable of detecting objects with dimensions 200 - 700 pixels.
+
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/ch3/fig4.pdf}
+  \caption{RetinaNet - $\text{P}_3\text{P}_4\text{P}_5$: A slightly different version of RetinaNet without using P6 and P7 . No. of parameters: 6.9M (without VGG).}
+  \label{fig4}
+\end{figure} 
+
+\subsubsection{Architecture - $\text{P}_\text{i}\text{Multi}$}\label{arch_3}
+The next architecture is similar to the previous. However, instead of sharing common classification and regression heads, each $P_i$ has its classification and regression submodel. This architecture is much more computationally and memory expensive, however, the reasoning behind this deployment is to examine if by attaching separate classifiers, there is any gain in performance.
+
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/ch3/fig5.pdf}
+  \caption{RetinaNet - $\text{P}_\text{i}\text{Multi}$: A modified Architecture - 2 with separate classification. and regression submodel. No. of parameters: 16.6M (without VGG).}
+  \label{fig5}
+\end{figure} 
+
+\subsubsection{Architecture - $\text{C}_\text{i}\text{Reduced}$} 
+Finally, the last configuration is the lightest among all. It obtains the reduced in depth feature maps right after the block 3, block4 and block 5 from VGG and attaches a common classifier and a box regressor directly. It is inspired by the SSD (\cite{liu2016ssd}) but is considerably lighter as it skips the layers after the block 5 of the VGG network.
+
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=0.6\textwidth]{figures/ch3/fig6.pdf}
+  \caption{RetinaNet - $\text{C}_\text{i}\text{Reduced}$: The lightest architecture, inspired by the SSD, but more much shallower. No. of parameters: 5.1M (without VGG).}
+  \label{fig6}
+\end{figure} 
+
+\section{VGG Architecture Comparisons}
+To estimate the impact of the backbone network and the side-network, each RetinaNet proposed architecture gets deployed with each VGG network. \fref{fig7} shows how AP and the F1-score scales with the depth of the backbone network.   
+
+\begin{figure}[!htb]
+  \centering
+  \subfigure[Avg. Precision versus VGG various depths.]{
+    \includegraphics[width=0.95\textwidth, height=4cm]{figures/ch3/fig7_1.pdf}
+    \label{fig7_1}
+  }
+  
+  \subfigure[F1-score versus VGG various depths.]{
+    \includegraphics[width=0.95\textwidth, height=4cm]{figures/ch3/fig7_2.pdf}
+    \label{fig7_2}
+  }
+  \caption{The mean values of AP and F1-score and their standard deviations averaged over 10 times.}
+  \label{fig7}
+\end{figure}
+
+From \fref{fig7_1}, it can be seen that average precision scales with the depth of the network steadily. The increment rate is not large enough to be worth exploring deeper models, as the number of parameters and training time increases adversely. However, F1-score does not follow this trend as it climax under VGG16 and then starts to stabilise (the divergence is a result of noise and random oscillations). AP shows that indeed, the depth of the network improves the detection of more true positives. F1-score, after VGG16, illustrates that neither the depth of the model nor the side-network deployment can confine the model from predicting false positives.
+
+Concerning the side-network, every RetinaNet deployment, does not exhibit any striking difference, apart from $\text{C}_\text{i}\text{Reduced}$ architecture in terms of average precision. Under every VGG architecture, it outperformed other deployments notably. This observation, proves that building high-level semantic feature maps at all levels, or attaching separate classifier-regressor heads, or increasing the depth and the complexity of the side-network by any means, does not help this binary problem but harms it. A lighter version of the SSD algorithm is enough to address the apple detection problem through this dataset.
+
+
+\begin{table}[!htb]
+  \centering
+  \resizebox{0.75\textwidth}{!}{
+  \begin{tabular}{ccccc}
+  \toprule
+  \textbf{Avg. Precision} & \textbf{VGG11} & \textbf{VGG13} & \textbf{VGG16} & \textbf{VGG19} \\
+  \midrule
+  Original (202)								&	0.894$\pm$0.004		&	0.925$\pm$0.001		& 	0.929$\pm$0.002		&	0.936$\pm$0.004\\
+  $\text{P}_3\text{P}_4\text{P}_5$ (202) 			&	0.891$\pm$0.003		&	0.926$\pm$0.001		& 	0.931$\pm$0.006		&	0.932$\pm$0.004\\
+  $\text{P}_\text{i}\text{Multi}$ (202)				&	0.887$\pm$0.005		&	0.925$\pm$0.003 		& 	0.930$\pm$0.005		&	0.932$\pm$0.005\\
+  \textbf{$\text{C}_\text{i}\text{Reduced}$} (202) 	&	\textbf{0.907$\pm$0.002}	&	\textbf{0.931$\pm$0.002} 	&	\textbf{0.936$\pm$0.004}	&	\textbf{0.942$\pm$0.001}\\
+  \bottomrule
+  \end{tabular}
+  }
+  \caption{Analytical values of \fref{fig7_1} for a more accurate comparison. Parentheses indicate the input resolution.}
+  \label{tab2}
+\end{table}
+
+\begin{table}[!htb]
+  \centering
+  \resizebox{0.75\textwidth}{!}{
+  \begin{tabular}{ccccc}
+  \toprule
+  \textbf{F1-score} & \textbf{VGG11} & \textbf{VGG13} & \textbf{VGG16} & \textbf{VGG19} \\
+  \midrule
+  Original (202)									&	0.832$\pm$0.007		&	0.875$\pm$0.003		& 	0.883$\pm$0.003		&	\textbf{0.887$\pm$0.004}\\
+  $\text{P}_3\text{P}_4\text{P}_5$ (202) 				&	0.832$\pm$0.005		&	0.872$\pm$0.004		& 	0.885$\pm$0.005		&	0.885$\pm$0.003\\
+  $\text{P}_\text{i}\text{Multi}$ (202)					&	0.829$\pm$0.008		&	0.874$\pm$0.002 		& 	0.884$\pm$0.005		&	0.880$\pm$0.003\\
+  \textbf{$\text{C}_\text{i}\text{Reduced}$} (202) 		&	\textbf{0.842$\pm$0.003}	&	\textbf{0.877$\pm$0.004}	&	\textbf{0.886$\pm$0.007}	&	0.882$\pm$0.003\\
+  \bottomrule
+  \end{tabular}
+  }
+  \caption{Analytical values of \fref{fig7_2} for a more accurate comparison.}
+  \label{tab3}
+\end{table}
+
+\tref{tab4} shows, as expected, that inference time scales with the depth of the model as total parameters increase. $\text{C}_\text{i}\text{Reduced}$ is the lightest model with the smallest memory footprint among the rest; only 19.8M parameters coupled with VGG16, while VGG19 has 20M parameters itself. It achieves high rate detections while maintaining the highest AP = 0.936.
+
+\begin{table}[!htb]
+  \centering
+  \resizebox{0.7\textwidth}{!}{
+  \begin{tabular}{ccccc}
+  \toprule
+  \textbf{Inference time (FPS)}	  				& \textbf{VGG11} 	& \textbf{VGG13} 	& \textbf{VGG16} 	& \textbf{VGG19} \\
+  Original (202)								&	68.6			&	65.3			& 	58.2			&	57.6\\
+  $\text{P}_3\text{P}_4\text{P}_5$ (202) 			&	79.8			&	76.5			& 	68.6			&	65.2\\
+  $\text{P}_\text{i}\text{Multi}$ (202)				&	81.4			&	78.1			& 	68.2			&	67.5\\
+  \textbf{$\text{C}_\text{i}\text{Reduced}$} (202) 	&	\textbf{87.5}	&	\textbf{82.7} 	&	\textbf{70.1}	&	\textbf{69.8}\\
+  \bottomrule
+  \end{tabular}
+  }
+  \caption{Inference time for every VGG. Detection rates depend heavily on the No. of parameters of the model and the input resolution.}
+  \label{tab4}
+\end{table}
+
+All VGG models were initialised upon the pre-trained ImageNet weights. Training with random weight initialisation delayed convergence but did not show any improvement in the results as \cite{bargoti2017deep} originally stated. Transfer learning among the models, that is transferring the weights progressively from VGG11 to VGG19, as it was done in the original work of \cite{simonyan2014very} did not show any other advance rather than saving training from a couple of epochs ($\sim3$ minutes with a resolution of $202\times308$).
+
 
 \section{Performance - Training Size Relation}
 
