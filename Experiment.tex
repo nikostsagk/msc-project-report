@@ -57,7 +57,7 @@ The dataset provides circular annotations for the fruits; thus, they were conver
 \subsection{Hardware and Software specifications}
 The deployment was set up on the Keras (\cite{chollet2015keras}) implementation of RetinaNet, provided by Fizyr\footnote{\url{https://github.com/fizyr/keras-retinanet}} and trained using a single NVIDIA GeForce GTX 1080 Ti provided by the Iridis 5\footnote{\url{https://www.southampton.ac.uk/isolutions/staff/iridis.page}} Computer Cluster. Appendix \ref{pack_versions} includes the complete list with the packages' versions. The repository can be found in \url{https://github.com/nikostsagk/Apple-detection}.
 
-\subsection{Training Details}
+\subsection{Training Details}\label{training_details}
 All models were trained on the complete training set, consisting of 896 images, while performance was monitored with respect to the validation set. Performance metrics presented below refer to the test set.
 
 The models were trained for 30 epochs of 2000 steps each with $\text{batch size} = 1$. Regarding the optimiser, ADAM (\cite{kingma2014adam}) was used, with an initial learning rate of $10^{-5}$, decreased later by a factor of 10 on epoch 15 and again on 25. It was observed that the models did not exhibit any signs of overfitting as the performance on the validation set was increasing until it stabilised around its maximum value; meanwhile, the validation loss was fluctuating around a minimum value. All models were initialised on the ImageNet VGG16 pre-trained weights unless otherwise stated. 30 epochs of training time took around 80-90 minutes for each model, but the performance had reached its peak from the first 6 epochs.
@@ -110,70 +110,69 @@ The IoU threshold to consider a detection as a true positive was set equal to $I
 Finally, concerning the loss function, tweaking $\alpha$ and $\gamma$ did not yield any difference in performance, so the default parameters $\alpha=0.25$ and $\gamma=2$ remained unchanged. A notable remark is that the loss function was found to be very unstable during training. The reason was that the normalisation parameters take values equal to the total number of the instances in the image. This behaviour is a result of the increased variance exhibited by the Fruit/Img., as can be seen in \tref{tab1}. To tackle this issue, the normalisation factor was modified, taking values from an exponential moving average of the total instances in the samples.
  
 \subsection{Proposed Architectures}
-RetinaNet network exploits the inherent multi-scale, pyramidal hierarchy of the backbone network making predictions in multiple scales. Deeper layers capture higher levels of abstraction, making coarser feature maps semantically stronger comparing to finer feature maps. Rougher feature maps are also useful for predicting bigger objects due to their receptive field. \fref{fig1} shows that detection from higher pyramidal levels might be redundant. The proposed architectures explore the depth impact of the backbone through the VGG11, VGG13, VGG16 and VGG19 architectures, and the topology of the side network of RetinaNet, responsible for the detection part. An optimised network can reduce even further inference time, decrease the network's number of parameters and reduce the need in computational resources such as memory requirements, while maintaining maximum performance.
+RetinaNet network exploits the inherent multi-scale, pyramidal hierarchy of the backbone network making predictions in multiple scales. Deeper layers capture higher levels of abstraction, making coarser feature maps semantically stronger comparing to finer feature maps. Rougher feature maps are also useful for predicting bigger objects due to their receptive field. \fref{fig1} shows that detection from higher pyramidal levels might be redundant. 
 
-\subsubsection{Architecture - Original}\label{arch_1} 
-The first architecture is the original RetinaNet, making predictions from the 5 pyramidal levels $(P3,P4,P5,P6,P7)$. P3, P4 and P5, are obtained via lateral connections right after the corresponding VGG blocks (reduced in the fixed depth of $\times256$) and are semantically richer due to the right-left pathway in \fref{fig2}. P6 and P7 are coming from strided convolutions of $3\times3$ single convolutional blocks and are not upsampled.
+The proposed architectures explore:
+\begin{itemize}
+ \item the depth impact of the backbone through the VGG11, VGG13, VGG16 and VGG19 architectures
+ \item and the topology of the side network of RetinaNet, responsible for the detection part.
+\end{itemize}
+
+Inference time, network's number of parameters and the need in computational and memory resources can be further reduced through an optimised network, that achieves maximum performance at the same time.
+
+\textbf{Architectures}
+\begin{itemize}
+ \item{\textbf{Original}:}\label{arch_1} 
+The first architecture, original RetinaNet, uses 5 pyramidal levels (P3,P4,P5,P6,P7) for prediction. P3, P4 and P5, are obtained via lateral connections right after the corresponding VGG blocks (reduced in a fixed depth of $\times256$) and are semantically enhanced as shown in the right-left pathway in \fref{fig3}. P6 and P7 are obtained from single $3\times3$ strided convolutions after the last VGG convolutional block. Finally, a common predictor and box regressor makes predictions from each layer.
 
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=0.6\textwidth]{figures/ch3/fig3.pdf}
+  \includegraphics[width=0.5\textwidth]{figures/ch3/fig3.pdf}
   \caption{The original RetinaNet pipeline. No. of parameters: 8.7M (without VGG).}
   \label{fig3}
 \end{figure} 
 
-\subsubsection{Architecture - $\text{P}_3\text{P}_4\text{P}_5$}\label{arch_2}
-The second architecture follows the original RetinaNet structure, without utilising P6 and P7 at all. P3, P4, P5 still follows the upsampling-merging technique. The main difference is that it is not capable of detecting objects with dimensions 200 - 700 pixels.
+ \item{\textbf{$\text{P}_3\text{P}_4\text{P}_5$}:}\label{arch_2}
+The second architecture follows the original RetinaNet structure, without utilising P6 and P7 at all. P3, P4, P5 still follows the upsampling-merging technique. The difference with the original architecture is that it is incapable of detecting objects ranging  between $200^2$ - $700^2$ pixels.
 
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=0.6\textwidth]{figures/ch3/fig4.pdf}
+  \includegraphics[width=0.5\textwidth]{figures/ch3/fig4.pdf}
   \caption{RetinaNet - $\text{P}_3\text{P}_4\text{P}_5$: A slightly different version of RetinaNet without using P6 and P7 . No. of parameters: 6.9M (without VGG).}
   \label{fig4}
 \end{figure} 
 
-\subsubsection{Architecture - $\text{P}_\text{i}\text{Multi}$}\label{arch_3}
-The next architecture is similar to the previous. However, instead of sharing common classification and regression heads, each $P_i$ has its classification and regression submodel. This architecture is much more computationally and memory expensive, however, the reasoning behind this deployment is to examine if by attaching separate classifiers, there is any gain in performance.
+ \item{\textbf{$\text{P}_\text{i}\text{Multi}$}:}\label{arch_3}
+The next architecture is similar to the previous. However, instead of sharing common classification and regression heads, each $P_i$ has separate classifiers and regressors with unshared parameters. This architecture is much more computationally and memory expensive, however, the reasoning behind this deployment is to investigate if by attaching multiple classification and regression heads, there is any gain in performance.
 
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=0.6\textwidth]{figures/ch3/fig5.pdf}
+  \includegraphics[width=0.5\textwidth]{figures/ch3/fig5.pdf}
   \caption{RetinaNet - $\text{P}_\text{i}\text{Multi}$: A modified Architecture - 2 with separate classification. and regression submodel. No. of parameters: 16.6M (without VGG).}
   \label{fig5}
 \end{figure} 
 
-\subsubsection{Architecture - $\text{C}_\text{i}\text{Reduced}$} 
-Finally, the last configuration is the lightest among all. It obtains the reduced in depth feature maps right after the block 3, block4 and block 5 from VGG and attaches a common classifier and a box regressor directly. It is inspired by the SSD (\cite{liu2016ssd}) but is considerably lighter as it skips the layers after the block 5 of the VGG network.
+ \item{\textbf{$\text{C}_\text{i}\text{Reduced}$}:} 
+Finally, the last configuration is the lightest among all. It utilises only the reduced in depth feature maps obtained right after block 3, block4 and block 5 from VGG by attaching common classifier and box regressor heads. It is inspired by the SSD (\cite{liu2016ssd}), but is considerably lighter, as it skips the extra layers after block 5 of the VGG network.
 
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=0.6\textwidth]{figures/ch3/fig6.pdf}
+  \includegraphics[width=0.5\textwidth]{figures/ch3/fig6.pdf}
   \caption{RetinaNet - $\text{C}_\text{i}\text{Reduced}$: The lightest architecture, inspired by the SSD, but more much shallower. No. of parameters: 5.1M (without VGG).}
   \label{fig6}
 \end{figure} 
 
+\end{itemize}
+
 \section{VGG Architecture Comparisons}
-To estimate the impact of the backbone network and the side-network, each RetinaNet proposed architecture gets deployed with each VGG network. \fref{fig7} shows how AP and the F1-score scales with the depth of the backbone network.   
+To estimate the impact of the backbone network and the side-network, each RetinaNet proposed architecture gets deployed on each VGG network separately. \fref{fig7} and \ref{fig8} show how AP and the F1-score scales with the depth of the backbone network.   
 
 \begin{figure}[!htb]
   \centering
-  \subfigure[Avg. Precision versus VGG various depths.]{
-    \includegraphics[width=0.95\textwidth, height=4cm]{figures/ch3/fig7_1.pdf}
-    \label{fig7_1}
-  }
-  
-  \subfigure[F1-score versus VGG various depths.]{
-    \includegraphics[width=0.95\textwidth, height=4cm]{figures/ch3/fig7_2.pdf}
-    \label{fig7_2}
-  }
-  \caption{The mean values of AP and F1-score and their standard deviations averaged over 10 times.}
+  \includegraphics[width=\textwidth]{figures/ch3/fig7.pdf}
+  \caption{Comparative results of Avg. Precision versus the four VGG models, for each proposed RetinaNet model. Results were averaged over 10 times.}
   \label{fig7}
 \end{figure}
-
-From \fref{fig7_1}, it can be seen that average precision scales with the depth of the network steadily. The increment rate is not large enough to be worth exploring deeper models, as the number of parameters and training time increases adversely. However, F1-score does not follow this trend as it climax under VGG16 and then starts to stabilise (the divergence is a result of noise and random oscillations). AP shows that indeed, the depth of the network improves the detection of more true positives. F1-score, after VGG16, illustrates that neither the depth of the model nor the side-network deployment can confine the model from predicting false positives.
-
-Concerning the side-network, every RetinaNet deployment, does not exhibit any striking difference, apart from $\text{C}_\text{i}\text{Reduced}$ architecture in terms of average precision. Under every VGG architecture, it outperformed other deployments notably. This observation, proves that building high-level semantic feature maps at all levels, or attaching separate classifier-regressor heads, or increasing the depth and the complexity of the side-network by any means, does not help this binary problem but harms it. A lighter version of the SSD algorithm is enough to address the apple detection problem through this dataset.
-
 
 \begin{table}[!htb]
   \centering
@@ -189,9 +188,21 @@ Concerning the side-network, every RetinaNet deployment, does not exhibit any st
   \bottomrule
   \end{tabular}
   }
-  \caption{Analytical values of \fref{fig7_1} for a more accurate comparison. Parentheses indicate the input resolution.}
-  \label{tab2}
+  \caption{Indicative values of Avg. Precision for the selected four VGG models, for each proposed RetinaNet model (\fref{fig7}). Parentheses indicate the input resolution.}
+  \label{tab3}
 \end{table}
+
+From \fref{fig7}, it can be seen that the average precision scales with the depth of the network steadily. The increment rate is not large enough  to warrant exploring deeper models, as the number of parameters and training time increases adversely. The average precision versus depth diagram, shows that indeed, the depth of the network helps the network detecting more true positives. 
+
+However, the F1-score as shown, in \fref{fig8} does not follow this trend, as it reaches its climax under VGG16 for the $\text{P}_\text{i}\text{Multi}$ and $\text{C}_\text{i}\text{Reduced}$ models, while the Original model exhibits a slight increase.
+F1-score, after VGG16, illustrates that neither the depth of the model, nor the side-network deployment can confine the model from predicting false positives.
+
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=\textwidth]{figures/ch3/fig8.pdf}
+  \caption{Comparative results of F1-score versus the four VGG models, for each proposed RetinaNet model. Results were averaged over 10 times.}
+  \label{fig8}
+\end{figure}
 
 \begin{table}[!htb]
   \centering
@@ -200,41 +211,107 @@ Concerning the side-network, every RetinaNet deployment, does not exhibit any st
   \toprule
   \textbf{F1-score} & \textbf{VGG11} & \textbf{VGG13} & \textbf{VGG16} & \textbf{VGG19} \\
   \midrule
-  Original (202)									&	0.832$\pm$0.007		&	0.875$\pm$0.003		& 	0.883$\pm$0.003		&	\textbf{0.887$\pm$0.004}\\
-  $\text{P}_3\text{P}_4\text{P}_5$ (202) 				&	0.832$\pm$0.005		&	0.872$\pm$0.004		& 	0.885$\pm$0.005		&	0.885$\pm$0.003\\
-  $\text{P}_\text{i}\text{Multi}$ (202)					&	0.829$\pm$0.008		&	0.874$\pm$0.002 		& 	0.884$\pm$0.005		&	0.880$\pm$0.003\\
-  \textbf{$\text{C}_\text{i}\text{Reduced}$} (202) 		&	\textbf{0.842$\pm$0.003}	&	\textbf{0.877$\pm$0.004}	&	\textbf{0.886$\pm$0.007}	&	0.882$\pm$0.003\\
+  Original (202)							&	0.832$\pm$0.007		&	0.875$\pm$0.003		& 	0.883$\pm$0.003	&	\textbf{0.887$\pm$0.004}\\
+  $\text{P}_3\text{P}_4\text{P}_5$ (202)		&	0.832$\pm$0.005		&	0.872$\pm$0.004		& 	0.885$\pm$0.005	&	0.885$\pm$0.003\\
+  $\text{P}_\text{i}\text{Multi}$ (202)			&	0.829$\pm$0.008		&	0.874$\pm$0.002 		& 	0.884$\pm$0.005	&	0.880$\pm$0.003\\
+  \textbf{$\text{C}_\text{i}\text{Reduced}$} (202) &	\textbf{0.842$\pm$0.003}	&	\textbf{0.877$\pm$0.004}	&	\textbf{0.886$\pm$0.007}	&	0.882$\pm$0.003\\
   \bottomrule
   \end{tabular}
   }
-  \caption{Analytical values of \fref{fig7_2} for a more accurate comparison.}
-  \label{tab3}
-\end{table}
-
-\tref{tab4} shows, as expected, that inference time scales with the depth of the model as total parameters increase. $\text{C}_\text{i}\text{Reduced}$ is the lightest model with the smallest memory footprint among the rest; only 19.8M parameters coupled with VGG16, while VGG19 has 20M parameters itself. It achieves high rate detections while maintaining the highest AP = 0.936.
-
-\begin{table}[!htb]
-  \centering
-  \resizebox{0.7\textwidth}{!}{
-  \begin{tabular}{ccccc}
-  \toprule
-  \textbf{Inference time (FPS)}	  				& \textbf{VGG11} 	& \textbf{VGG13} 	& \textbf{VGG16} 	& \textbf{VGG19} \\
-  Original (202)								&	68.6			&	65.3			& 	58.2			&	57.6\\
-  $\text{P}_3\text{P}_4\text{P}_5$ (202) 			&	79.8			&	76.5			& 	68.6			&	65.2\\
-  $\text{P}_\text{i}\text{Multi}$ (202)				&	81.4			&	78.1			& 	68.2			&	67.5\\
-  \textbf{$\text{C}_\text{i}\text{Reduced}$} (202) 	&	\textbf{87.5}	&	\textbf{82.7} 	&	\textbf{70.1}	&	\textbf{69.8}\\
-  \bottomrule
-  \end{tabular}
-  }
-  \caption{Inference time for every VGG. Detection rates depend heavily on the No. of parameters of the model and the input resolution.}
+  \caption{Indicative values of F1-score for the selected four VGG models, for each proposed RetinaNet model (\fref{fig8}). Parentheses indicate the input resolution.}
   \label{tab4}
 \end{table}
 
-All VGG models were initialised upon the pre-trained ImageNet weights. Training with random weight initialisation delayed convergence but did not show any improvement in the results as \cite{bargoti2017deep} originally stated. Transfer learning among the models, that is transferring the weights progressively from VGG11 to VGG19, as it was done in the original work of \cite{simonyan2014very} did not show any other advance rather than saving training from a couple of epochs ($\sim3$ minutes with a resolution of $202\times308$).
+Concerning the side-network, apart from $\text{C}_\text{i}\text{Reduced}$, the rest RetinaNet deployments, did not demonstrate any striking difference. Under most VGG architectures, $\text{C}_\text{i}\text{Reduced}$ outperformed notably the rest of the architectures, especially in AP. This observation manifests that the problem under study is not affected considerably by the complexity of the side-network in ways such as: integration of high-level semantic feature maps, attaching separate classifier-regressor heads or increasing the depth. Nonetheless, a lighter version of RetinaNet, inspired by the SSD pipeline, addresses the apple detection problem through the ACFR dataset satisfactorily.
+
+\tref{tab4} shows that inference time scales with the depth of the model upon increasing the total parameters, apart from the VGG16 and VGG19, which have the same inference time. Lightweight RetinaNet- $\text{C}_\text{i}\text{Reduced}$, holds the highest detection rates among the rest models, as expected.
+%However, it should be remarked that $\text{P}_\text{i}\text{Multi}$, which is a more complex architecture of $\text{P}_3\text{P}_4\text{P}_5$, proved to be faster from its simpler counterpart.
+
+%$\text{C}_\text{i}\text{Reduced}$ is the lightest model with the smallest memory footprint among the rest; only 19.8M parameters coupled with VGG16, while VGG19 has 20M parameters itself. It achieves high rate detections while maintaining the highest AP = 0.936.
+
+\begin{table}[!htb]
+  \centering
+  \resizebox{0.8\textwidth}{!}{
+  \begin{tabular}{ccccc}
+  \toprule
+  \textbf{Inference time (FPS)}	  			& \textbf{VGG11} 	& \textbf{VGG13} 	& \textbf{VGG16} 	& \textbf{VGG19} \\
+  \midrule
+  Original (202)							&	61.0$\pm$3.5		&	58.8$\pm$3.0		& 	55.3$\pm$2.5	&	55.3$\pm$2.5\\
+  $\text{P}_3\text{P}_4\text{P}_5$ (202) 		&	71.1$\pm$3.3		&	69.1$\pm$2.5		& 	67.3$\pm$2.0	&	67.3$\pm$2.0\\
+  $\text{P}_\text{i}\text{Multi}$ (202)			&	67.8$\pm$4.4		&	67.3$\pm$3.1		& 	65.2$\pm$2.7	&	65.2$\pm$2.7\\
+  \textbf{$\text{C}_\text{i}\text{Reduced}$} (202)	& \textbf{74.0$\pm$5.1}	& \textbf{71.1$\pm$4.5}	& \textbf{65.2$\pm$4.3} 	& \textbf{65.2$\pm$4.3}\\
+  \bottomrule
+  \end{tabular}
+  }
+  \caption{Inference time for every VGG. Detection rates depend heavily on the No. of parameters of the model and the input resolution. However, the transition from VGG16 to VGG19 did not show any change.}
+  \label{tab5}
+\end{table}
+
+All VGG models were initialised upon the pre-trained ImageNet weights. Training with random weight initialisation delayed convergence, but did not show any improvement in the results as demonstrated in \cite{bargoti2017deep}. Transfer learning among the VGG models, that is transferring the weights progressively from VGG11 to VGG19 (\cite{simonyan2014very}), did not show any other improvement in performance rather than saving training from a couple of epochs ($\sim3$ minutes with a resolution of $202\times308$).
 
 
 \section{Performance - Training Size Relation}
+This section presents a performance analysis of RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (202)	over the size of the training dataset. For each training subset, N samples were drawn from the training dataset randomly, without replacement (negative samples were discarded). The subsets were created once and then used for 10 training sessions each. The models were prone to overfitting, particularly those trained on small datasets; thus, early stopping was implemented to obtain the maximum possible performance. \fref{fig9} make evident, that the model performs satisfactorily already from the first 10 samples. Furthermore, 200 to 500 samples are enough to achieve state-of-the-art performance. From the first 6 samples, RetinaNet outperforms Faster R-CNN in the work of \cite{bargoti2017deep} by 0.1 in every consecutive training subset.
+
+ \begin{figure}[!htb]
+  \centering
+  \subfigure[]{
+    \includegraphics[width=0.9\textwidth]{figures/ch3/fig9_1.pdf}
+    \label{fig9_1}
+  }
+  \subfigure[]{
+    \includegraphics[width=0.9\textwidth]{figures/ch3/fig9_2.pdf}
+    \label{fig9_2}
+  }
+  \caption{Avg. Precision and F1-score as a function of the number of training images on RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (202), for each VGG network.}
+  \label{fig9}
+\end{figure}
+
+Concerning backbone's network depth, VGG16 and VGG19 show their superiority over the rest architectures consistently. Another interesting feature of \fref{fig9} is that in training sessions consisting more than 10 samples, VGG11 attained the same performance with VGG16-19 only by decupling the dataset.
 
 \section{Peak Detection and Evaluation}
+To obtain maximum performance, RetinaNet - $\text{C}_\text{i}\text{Reduced}$ was trained on VGG16, using three resolutions ($202\times308$, $512\times781$ and $800\times1220$) as described in section \ref{training_details} with F1-score as the primary evaluation metric. Models presented here were trained initially on the training dataset and then both on the training and validation dataset, while being evaluated on the held-out testing dataset.
 
-\dots
+\begin{savenotes}
+\begin{table}[!htb]
+  \centering
+  \resizebox{0.8\textwidth}{!}{
+  \begin{tabular}{ccccc}
+  \toprule
+  \textbf{$(\text{IoU}=0.2 , \text{NMS} = 0.3)$}	& \textbf{AP} 	& \textbf{F1} 	& \textbf{mIoU} 	&  \textbf{$\Delta E$} \\
+  \midrule
+  train. (202)					&	0.948	&	0.895		& 	0.793	&	0.099\\
+  train. (512) 					&	0.953	&	0.903		& 	0.814	&	0.040\\
+  train. (800)					&	0.952	&	0.903		& 	0.829	&	\textbf{0.016}\\
+  train. + val. (202)				&	0.949	&	0.895		& 	0.807	&	0.081\\
+  train. + val. (512)				&	0.954	&	0.905		& 	0.824	&	0.038\\
+  train. + val. (800)				&	0.953	&	\textbf{0.907}	& 	0.835	&	0.025\\
+  \midrule
+  Faster R-CNN (ZF) [1]\footnote{[1]: \cite{bargoti2017deep}}		& 	-		&	0.892		&	-		&	-\\
+  Faster R-CNN (VGG16) [1]								& 	-		&	0.904		&	-		&	-\\
+  Faster R-CNN (VGG16) [2]\footnote{[2]: \cite{liang2018apple}}	& 	-		&	0.879		&	-		&	-\\
+  \midrule
+  SSD (300) [2]												& 	-		&	0.883		&	-		&	-\\
+  SSD (500) [2]												& 	-		&	0.890		&	-		&	-\\
+  \bottomrule
+  \end{tabular}
+  }
+  \caption{Comparing performance of RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (VGG16), trained on the training and on the combined training - validation set, with the state-of-the-art models. Parentheses indicate resolutions.}
+  \label{tab6}
+\end{table}
+\end{savenotes}
+
+\tref{tab6} shows that performance increases with resolution, with the best model achieving a maximum F1-score of \textbf{0.907}, outperforming the previous state-of-the-art model (\cite{bargoti2017deep}). \cite{liang2018apple} gave more emphasis on real-time detection and achieving 43.47 FPS using the SSD(300). RetinaNet - $\text{C}_\text{i}\text{Reduced}$(VGG16), beated SSD in performance and inference time by using even smaller resolution. A resolution of 800 improved the performance, in terms of F1-score, by $\sim1\%$, but with a huge drop in training time versus resolutions of 202. Specifically, models with resolution of 202, required x4 less time to train comparing to the ones that used 800 and also, they had x5.5 less inference time (12.6FPS vs 65.2 FPS).
+
+Moreover, from \tref{tab6} it can be seen that, while the IoU threshold was set equal to 0.2, as in the previous sections, the mean IoU between the ground truth and prediction is quite high, making very accurate localisations.
+
+The dataset does not specify any structure among the trellised trees in the pictures, thus structured yield estimation in the orchard block is impossible. However, $\Delta E$ represents overall count estimates, by using the normalised absolute error over the total number of instances in the dataset. $\Delta E$ seems to take smaller values as F1-score increase, giving an unstructured yield estimate for the whole dataset through the total number of predictions. Instead of tuning the detection confidence threshold to minimise $\Delta E$, it was optimised to take the maximum value, while keeping F1-score unchanged.
+
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=\textwidth]{figures/ch3/fig10.pdf}
+  \caption{Precision - Recall curves for the RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (VGG16). AP is defined by the area under the curve, while F1-score is the point on the curve where Precision and Recall take maximum values.}
+  \label{fig10}
+\end{figure} 
+
+
