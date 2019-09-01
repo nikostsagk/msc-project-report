@@ -148,7 +148,7 @@ Usually, most models define by default 9 anchor boxes with scales of $(2^0, 2^{1
 To associate ground truth boxes with suitable anchors, each anchor gets assigned with the overlap between the anchor box and the ground truth box (if any). If the IoU overlap is more than 0.5, then this anchor should be proposed for detection, and it is called a \textbf{\textit{positive anchor}}. If the IoU overlap is less than 0.4, that anchor is going to get suppressed, and it is classified as a \textbf{\textit{negative anchor}}. During training, if an anchor is neither positive nor negative, it does not contribute to the overall loss.
 
 \section{Intersection Over Union}
-Intersection over Union (IoU), or Jaccard index, is an evaluation metric used to measure how accurately a predicted box matches or overlaps with the ground truth box. As the name indicates, IoU is the ratio between the intersection and the union of two boxes. In most tasks, as in PASCAL VOC challenge \cite{everingham2010pascal}, if the IoU between the detection and the ground truth is more than 0.5, the detection counts as a true positive.
+Intersection over Union (IoU), or Jaccard index, is an evaluation metric used to measure how accurately a predicted box matches or overlaps with the ground truth box. As the name indicates, IoU is the ratio between the intersection and the union of two boxes. In most tasks, as in PASCAL-VOC challenge \cite{everingham2010pascal}, if the IoU between the detection and the ground truth is more than 0.5, the detection counts as a true positive.
 
 \begin{figure}[!htb]
   \centering
@@ -250,7 +250,7 @@ The subnetwork responsible for detections consist of a \textbf{classification su
 The class agnostic box regression subnet follows the same logic with four stacked $3\times3\times C$ convolutional kernels with ReLU activations, followed by $3\times3\times 4A$ with sigmoid activation. The output is a four-tuple for every anchor position with the refined bounding box. The prediction subnet shares its parameters across all pyramidal $P_i$ outputs, following the same philosophy as SSD.
 
 \section{Evaluation Metrics}
-Object detection has several evaluation metrics; nevertheless, performance comparisons depend on the problem. For example, in the PASCAL VOC challenge, models compete between those with the highest mAP, while in the apple detection problem, a model with higher F1-score is more accurate. However, the most useful metrics are:
+Object detection has several evaluation metrics; nevertheless, performance comparisons depend on the problem. For example, in the PASCAL-VOC challenge, models compete between those with the highest mAP, while in the apple detection problem, a model with higher F1-score is more accurate. However, the most useful metrics are:
 
 \bigskip
 \textbf{Recall}

@@ -31,16 +31,13 @@
 \LoadClass{\baseclass}
 \newcommand\bhrule{\typeout{------------------------------------------------------------------------------}}
 \newcommand\btypeout[1]{\bhrule\typeout{\space #1}\bhrule}
-\def\today{\ifcase\month\or
-  January\or February\or March\or April\or May\or June\or
-  July\or August\or September\or October\or November\or December\fi
-  \space \number\year}
 \usepackage{setspace}
+\usepackage{threeparttable}
 \onehalfspacing
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{2.0ex plus0.5ex minus0.2ex}
 \usepackage{vmargin}
-\setmarginsrb           { 1.5in}  % left margin
+\setmarginsrb           { 1.0in}  % left margin
                         { 0.6in}  % top margin
                         { 1.0in}  % right margin
                         { 0.8in}  % bottom margin
@@ -66,7 +63,7 @@
 \def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
 \hbox{}
 \thispagestyle{empty}
-\newpage
+
 \if@twocolumn\hbox{}\newpage\fi\fi\fi}
 \usepackage{amsmath,amsfonts,amssymb,amscd,amsthm,xspace}
 \theoremstyle{plain}
@@ -137,34 +134,28 @@
 \newcommand*{\FACULTY}[1]{\def\FACNAME{#1}}
 \newcommand*{\subject}[1]{\def\subjectname{#1}}
 \newcommand*{\keywords}[1]{\def\keywordnames{#1}}
-\supervisor  {}
-\examiner    {}
-\degree      {}
+\supervisor  {Dr. Jize Yan}
+\examiner    {Professor Kirk Martinez}
+\degree      {MSc Artificial Intelligence}
 \authors     {}
-\university  {\texorpdfstring{\href{http://www.soton.ac.uk}
+\university  {\texorpdfstring{\href{https://www.southampton.ac.uk}
                 {University of Southampton}}
                 {University of Southampton}}
-\UNIVERSITY  {\texorpdfstring{\href{http://www.soton.ac.uk}
+\UNIVERSITY  {\texorpdfstring{\href{https://www.southampton.ac.uk}
                 {UNIVERSITY OF SOUTHAMPTON}}
                 {UNIVERSITY OF SOUTHAMPTON}}
-\department  {\texorpdfstring{\href{http://www.ecs.soton.ac.uk}
+\department  {\texorpdfstring{\href{https://www.ecs.soton.ac.uk}
                 {School of Electronics and Computer Science}}
                 {School of Electronics and Computer Science}}
-\DEPARTMENT  {\texorpdfstring{\href{http://www.ecs.soton.ac.uk}
+\DEPARTMENT  {\texorpdfstring{\href{https://www.ecs.soton.ac.uk}
                 {SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
                 {SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
-\group       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
-                {Image, Speech and Intelligent Systems Group}}
-                {Image, Speech and Intelligent Systems Group}}
-\GROUP       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
-                {IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
-                {IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
-\faculty     {\texorpdfstring{\href{http://www.engineering.soton.ac.uk}
-                {Faculty of Engineering and Physical Sciences}}
-                {Faculty of Engineering and Physical Sciences}}
-\FACULTY     {\texorpdfstring{\href{http://www.engineering.soton.ac.uk}
-                {FACULTY OF ENGINEERING AND PHYSICAL SCIENCES}}
-                {FACULTY OF ENGINEERING AND PHYSICAL SCIENCES}}
+\faculty     {\texorpdfstring{\href{https://www.fpse.soton.ac.uk}
+                {Faculty of Physical Sciences and Engineering}}
+                {Faculty of Physical Sciences and Engineering}}
+\FACULTY     {\texorpdfstring{\href{https://www.fpse.soton.ac.uk}
+                {FACULTY OF PHYSICAL SCIENCE AND ENGINEERING}}
+                {FACULTY OF PHYSICAL SCIENCE AND ENGINEERING}}
 \addresses   {}
 \subject     {}
 \keywords    {}
@@ -181,33 +172,41 @@
     \let \footnote \thanks
     \setcounter{footnote}{0}
     \null\vfil
-    \vskip 60\p@
+    \vskip 10\p@
     \begin{center}
       \setlength{\parskip}{0pt}
       {\large\textbf{\UNIVNAME}\par}
-      \vfill
-      {\huge \bf \@title \par}
-      \vfill
-      {\LARGE by \par}
-      \smallskip
-      {\LARGE \authornames \par}
-      \vfill
-      {\large A thesis submitted in partial fulfillment for the \par}
-      {\large degree of Master of Science \par}
-      \bigskip
-      \bigskip
-      {\large in the \par}
       {\large \facname \par}
       {\large \deptname \par}
+      \vfill
+      \vskip 80\p@
+      {\LARGE \bf \@title \par}
+      \vfill
       \bigskip
       \bigskip
+      {\Large by\vfill \authornames \par}
+      \vfill
       \bigskip
-      {\Large \@date \par}
       \bigskip
+      {\large September 2019 \par}
+      \vfill
+      \vskip 30mm
+      {\large Supervisor: \supname \par}
+      {\large Second Examiner: \examname \par}
+      \vfill
+      \parbox[t][51mm][s]{120mm}{
+        \center
+        \vfill
+        {\large A dissertation submitted in partial fulfilment of the degree of}
+        {\Large  \par \degreename \par}
+        \vfill
+      }
+      %\parbox[t][95mm][s]{200mm}{}
     \end{center}
     \par
     \@thanks
     \vfil\null
+    \cleardoublepage
   \end{titlepage}
   \setcounter{footnote}{0}%
   \global\let\thanks\relax
@@ -215,12 +214,11 @@
   \global\let\@thanks\@empty
   \global\let\@author\@empty
   \global\let\@date\@empty
-  \global\let\@title\@empty
+  % \global\let\@title\@empty
   \global\let\title\relax
   \global\let\author\relax
   \global\let\date\relax
   \global\let\and\relax
-  \cleardoublepage
 }
 \newenvironment{abstract}
 {
@@ -236,7 +234,7 @@
     {\normalsize \FACNAME \par}
     {\normalsize \DEPTNAME \par}
     \bigskip
-    {\normalsize \underline{Master of Science}\par}
+    {\normalsize \underline{\degreename}\par}
     \bigskip
     {\normalsize\bf \@title \par}
     \medskip
@@ -253,9 +251,13 @@
 \newcounter{dummy}
 \newcommand\addtotoc[1]{
 \refstepcounter{dummy}
-\addcontentsline{toc}{chapter}{#1}}
-\renewcommand\tableofcontents{
+\addcontentsline{toc}{chapter}{#1}
+% \thispagestyle{empty}
+}
+\renewcommand\tableofcontents
+{
 \btypeout{Table of Contents}
+\addtotoc{Contents}
 \begin{spacing}{1}{
     \setlength{\parskip}{1pt}
     \if@twocolumn
@@ -268,11 +270,23 @@
            \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}
     \@starttoc{toc}
     \if@restonecol\twocolumn\fi
-   \cleardoublepage
+
 }\end{spacing}
 }
+
+\newcommand\statementoforiginality[1]{
+\btypeout{Statement of Originality}
+\addtotoc{Statement of Originality}
+\thispagestyle{plain}
+\null\vfil
+\begin{center}{\LARGE \bf Statement of Originality \par}\end{center}
+{\normalsize #1}
+\vfil\vfil\null
+}
+
 \renewcommand\listoffigures{
 \btypeout{List of Figures}
+\addtotoc{List of Figures}
 \begin{spacing}{1}{
     \setlength{\parskip}{1pt}
     \if@twocolumn
@@ -285,11 +299,13 @@
               {\MakeUppercase\listfigurename}}
     \@starttoc{lof}
     \if@restonecol\twocolumn\fi
-    \cleardoublepage
+
 }\end{spacing}
 }
+
 \renewcommand\listoftables{
 \btypeout{List of Tables}
+\addtotoc{List of Tables}
 \begin{spacing}{1}{
     \setlength{\parskip}{1pt}
     \if@twocolumn
@@ -302,10 +318,11 @@
           \MakeUppercase\listtablename}{\MakeUppercase\listtablename}}
     \@starttoc{lot}
     \if@restonecol\twocolumn\fi
-    \cleardoublepage
 }\end{spacing}
 }
-\newcommand\listsymbolname{Nomenclature}
+
+
+\newcommand\listsymbolname{List of Symbols}
 \usepackage{longtable}
 \newcommand\listofsymbols[2]{
 \btypeout{\listsymbolname}
@@ -316,6 +333,20 @@
 \begin{longtable}[c]{#1}#2\end{longtable}\par
     \cleardoublepage
 }
+
+\newcommand\listofAbbreviations{List of Abbreviations}
+\usepackage{longtable}
+\newcommand\listofabbreviations[2]{
+\btypeout{\listofAbbreviations}
+\addtotoc{\listofAbbreviations}
+    \chapter*{\listofAbbreviations
+      \@mkboth{
+          \MakeUppercase\listofAbbreviations}{\MakeUppercase\listofAbbreviations}}
+\begin{longtable}[c]{#1}#2\end{longtable}\par
+    \cleardoublepage
+}
+
+
 \newcommand\acknowledgements[1]{
 \btypeout{Acknowledgements}
 \addtotoc{Acknowledgements}
@@ -327,6 +358,37 @@
 \vfil\vfil\null
 \cleardoublepage
 }
+
+% test
+
+\newenvironment{changemargin}[2]{%
+\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{#1}%
+\setlength{\rightmargin}{#2}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{\parskip}%
+}%
+\item[]}{\end{list}}
+
+
+% \newcommand\listofAbbreviations[1]{
+% \btypeout{Abbreviations}
+% \addtotoc{Abbreviations}
+% \thispagestyle{plain}
+% % \null\vfil
+% \vskip 0\p@
+% % \setlength{\baselineskip}{5pt}
+% \begin{spacing}{0.8} 
+% {\Large\bf {List of Abbreviations} \par}
+% \end{spacing}
+% {\normalsize #1}
+% \vfil\vfil\null
+% \cleardoublepage
+% }
+
+
 \newcommand\dedicatory[1]{
 \btypeout{Dedicatory}
 \thispagestyle{plain}
@@ -347,4 +409,4 @@
   \@mainmatterfalse}
 \endinput
 %%
-%% End of file `ecsthesis.cls'.
+%% End of file `ecsproject.cls'.

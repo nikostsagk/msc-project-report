@@ -1,0 +1,399 @@
+\begin{thebibliography}{59}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{{\tt #1}}\fi
+
+\bibitem[Atherton and Kerbyson(1999)]{atherton1999size}
+Tim~J Atherton and Darren~J Kerbyson.
+\newblock Size invariant circle detection.
+\newblock {\em Image and Vision computing}, 17\penalty0 (11):\penalty0
+  795--803, 1999.
+
+\bibitem[Bargoti(2017)]{bargoti2017fruit}
+Suchet Bargoti.
+\newblock Fruit detection and tree segmentation for yield mapping in orchards.
+\newblock 2017.
+
+\bibitem[Bargoti and Underwood(2016)]{bargoti2016image}
+Suchet Bargoti and James Underwood.
+\newblock Image classification with orchard metadata.
+\newblock In {\em 2016 IEEE International Conference on Robotics and Automation
+  (ICRA)}, pages 5164--5170. IEEE, 2016.
+
+\bibitem[Bargoti and Underwood(2017{\natexlab{a}})]{bargoti2017deep}
+Suchet Bargoti and James Underwood.
+\newblock Deep fruit detection in orchards.
+\newblock In {\em 2017 IEEE International Conference on Robotics and Automation
+  (ICRA)}, pages 3626--3633. IEEE, 2017{\natexlab{a}}.
+
+\bibitem[Bargoti and Underwood(2017{\natexlab{b}})]{bargoti2017image}
+Suchet Bargoti and James~P Underwood.
+\newblock Image segmentation for fruit detection and yield estimation in apple
+  orchards.
+\newblock {\em Journal of Field Robotics}, 34\penalty0 (6):\penalty0
+  1039--1060, 2017{\natexlab{b}}.
+
+\bibitem[Beucher et~al.(1992)]{beucher1992watershed}
+Serge Beucher et~al.
+\newblock The watershed transformation applied to image segmentation.
+\newblock {\em SCANNING MICROSCOPY-SUPPLEMENT-}, pages 299--299, 1992.
+
+\bibitem[Chen et~al.(2017)Chen, Shivakumar, Dcunha, Das, Okon, Qu, Taylor, and
+  Kumar]{chen2017counting}
+Steven~W Chen, Shreyas~S Shivakumar, Sandeep Dcunha, Jnaneshwar Das, Edidiong
+  Okon, Chao Qu, Camillo~J Taylor, and Vijay Kumar.
+\newblock Counting apples and oranges with deep learning: A data-driven
+  approach.
+\newblock {\em IEEE Robotics and Automation Letters}, 2\penalty0 (2):\penalty0
+  781--788, 2017.
+
+\bibitem[Chollet et~al.(2015)]{chollet2015keras}
+Fran\c{c}ois Chollet et~al.
+\newblock Keras.
+\newblock \url{https://keras.io}, 2015.
+
+\bibitem[Council(1997)]{NAP5491}
+National~Research Council.
+\newblock {\em Precision Agriculture in the 21st Century: Geospatial and
+  Information Technologies in Crop Management}.
+\newblock The National Academies Press, Washington, DC, 1997.
+\newblock ISBN 978-0-309-46616-5.
+
+\bibitem[Deng et~al.(2009)Deng, Dong, Socher, Li, Li, and
+  Fei-Fei]{deng2009imagenet}
+Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li~Fei-Fei.
+\newblock Imagenet: A large-scale hierarchical image database.
+\newblock In {\em 2009 IEEE conference on computer vision and pattern
+  recognition}, pages 248--255. Ieee, 2009.
+
+\bibitem[Everingham et~al.(2010)Everingham, Van~Gool, Williams, Winn, and
+  Zisserman]{everingham2010pascal}
+Mark Everingham, Luc Van~Gool, Christopher~KI Williams, John Winn, and Andrew
+  Zisserman.
+\newblock The pascal visual object classes (voc) challenge.
+\newblock {\em International journal of computer vision}, 88\penalty0
+  (2):\penalty0 303--338, 2010.
+
+\bibitem[Felzenszwalb et~al.(2009)Felzenszwalb, Girshick, McAllester, and
+  Ramanan]{felzenszwalb2009object}
+Pedro~F Felzenszwalb, Ross~B Girshick, David McAllester, and Deva Ramanan.
+\newblock Object detection with discriminatively trained part-based models.
+\newblock {\em IEEE transactions on pattern analysis and machine intelligence},
+  32\penalty0 (9):\penalty0 1627--1645, 2009.
+
+\bibitem[Fu et~al.(2018)Fu, Feng, Majeed, Zhang, Zhang, Karkee, and
+  Zhang]{fu2018kiwifruit}
+Longsheng Fu, Yali Feng, Yaqoob Majeed, Xin Zhang, Jing Zhang, Manoj Karkee,
+  and Qin Zhang.
+\newblock Kiwifruit detection in field images using faster r-cnn with zfnet.
+\newblock {\em IFAC-PapersOnLine}, 51\penalty0 (17):\penalty0 45--50, 2018.
+
+\bibitem[Garcia-Garcia et~al.()Garcia-Garcia, Orts-Escolano, Oprea,
+  Villena-Martinez, and Garcia-Rodriguez]{garcia1704review}
+A~Garcia-Garcia, S~Orts-Escolano, S~Oprea, V~Villena-Martinez, and
+  J~Garcia-Rodriguez.
+\newblock A review on deep learning techniques applied to semantic
+  segmentation. arxiv 2017.
+\newblock {\em arXiv preprint arXiv:1704.06857}.
+
+\bibitem[Gen{\'e}-Mola et~al.(2019)Gen{\'e}-Mola, Vilaplana, Rosell-Polo,
+  Morros, Ruiz-Hidalgo, and Gregorio]{gene2019multi}
+Jordi Gen{\'e}-Mola, Ver{\'o}nica Vilaplana, Joan~R Rosell-Polo, Josep-Ramon
+  Morros, Javier Ruiz-Hidalgo, and Eduard Gregorio.
+\newblock Multi-modal deep learning for fuji apple detection using rgb-d
+  cameras and their radiometric capabilities.
+\newblock {\em Computers and Electronics in Agriculture}, 162:\penalty0
+  689--698, 2019.
+
+\bibitem[Girshick(2015)]{girshick2015fast}
+Ross Girshick.
+\newblock Fast r-cnn.
+\newblock In {\em Proceedings of the IEEE international conference on computer
+  vision}, pages 1440--1448, 2015.
+
+\bibitem[Girshick et~al.(2014)Girshick, Donahue, Darrell, and
+  Malik]{girshick2014rich}
+Ross Girshick, Jeff Donahue, Trevor Darrell, and Jitendra Malik.
+\newblock Rich feature hierarchies for accurate object detection and semantic
+  segmentation.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 580--587, 2014.
+
+\bibitem[Godfray et~al.(2010)Godfray, Beddington, Crute, Haddad, Lawrence,
+  Muir, Pretty, Robinson, Thomas, and Toulmin]{godfray2010food}
+H~Charles~J Godfray, John~R Beddington, Ian~R Crute, Lawrence Haddad, David
+  Lawrence, James~F Muir, Jules Pretty, Sherman Robinson, Sandy~M Thomas, and
+  Camilla Toulmin.
+\newblock Food security: the challenge of feeding 9 billion people.
+\newblock {\em science}, 327\penalty0 (5967):\penalty0 812--818, 2010.
+
+\bibitem[Gongal et~al.(2015)Gongal, Amatya, Karkee, Zhang, and
+  Lewis]{gongal2015sensors}
+A~Gongal, Suraj Amatya, Manoj Karkee, Q~Zhang, and Karen Lewis.
+\newblock Sensors and systems for fruit detection and localization: A review.
+\newblock {\em Computers and Electronics in Agriculture}, 116:\penalty0 8--19,
+  2015.
+
+\bibitem[H{\"a}ni et~al.(2018)H{\"a}ni, Roy, and Isler]{hani2018comparative}
+Nicolai H{\"a}ni, Pravakar Roy, and Volkan Isler.
+\newblock A comparative study of fruit detection and counting methods for yield
+  mapping in apple orchards.
+\newblock {\em arXiv preprint arXiv:1810.09499}, 2018.
+
+\bibitem[He et~al.(2015)He, Zhang, Ren, and Sun]{he2015spatial}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun.
+\newblock Spatial pyramid pooling in deep convolutional networks for visual
+  recognition.
+\newblock {\em IEEE transactions on pattern analysis and machine intelligence},
+  37\penalty0 (9):\penalty0 1904--1916, 2015.
+
+\bibitem[Hung et~al.(2013)Hung, Nieto, Taylor, Underwood, and
+  Sukkarieh]{hung2013orchard}
+Calvin Hung, Juan Nieto, Zachary Taylor, James Underwood, and Salah Sukkarieh.
+\newblock Orchard fruit segmentation using multi-spectral feature learning.
+\newblock In {\em 2013 IEEE/RSJ International Conference on Intelligent Robots
+  and Systems}, pages 5314--5320. IEEE, 2013.
+
+\bibitem[Hung et~al.(2015)Hung, Underwood, Nieto, and
+  Sukkarieh]{hung2015feature}
+Calvin Hung, James Underwood, Juan Nieto, and Salah Sukkarieh.
+\newblock A feature learning based approach for automated fruit yield
+  estimation.
+\newblock In {\em Field and service robotics}, pages 485--498. Springer, 2015.
+
+\bibitem[ILOSTAT(2019)]{agro_employment}
+International Labour~Organization ILOSTAT.
+\newblock \href{https://data.worldbank.org/indicator/SL.AGR.EMPL.ZS}{Employment
+  in agriculture (\% of total employment) (modeled ilo estimate)}, 2019.
+
+\bibitem[Kamilaris and Prenafeta-Boldu(2018)]{kamilaris2018deep}
+Andreas Kamilaris and Francesc~X Prenafeta-Boldu.
+\newblock Deep learning in agriculture: A survey.
+\newblock {\em Computers and Electronics in Agriculture}, 147:\penalty0 70--90,
+  2018.
+
+\bibitem[Kingma and Ba(2014)]{kingma2014adam}
+Diederik~P Kingma and Jimmy Ba.
+\newblock Adam: A method for stochastic optimization.
+\newblock {\em arXiv preprint arXiv:1412.6980}, 2014.
+
+\bibitem[Koirala et~al.(2019)Koirala, Walsh, Wang, and
+  McCarthy]{koirala2019deep}
+A~Koirala, KB~Walsh, Z~Wang, and C~McCarthy.
+\newblock Deep learning for real-time fruit detection and orchard fruit load
+  estimation: Benchmarking of ‘mangoyolo’.
+\newblock {\em Precision Agriculture}, pages 1--29, 2019.
+
+\bibitem[Krizhevsky et~al.(2012)Krizhevsky, Sutskever, and
+  Hinton]{krizhevsky2012imagenet}
+Alex Krizhevsky, Ilya Sutskever, and Geoffrey~E Hinton.
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock In {\em Advances in neural information processing systems}, pages
+  1097--1105, 2012.
+
+\bibitem[Kuhn(1955)]{kuhn1955hungarian}
+Harold~W Kuhn.
+\newblock The hungarian method for the assignment problem.
+\newblock {\em Naval research logistics quarterly}, 2\penalty0 (1-2):\penalty0
+  83--97, 1955.
+
+\bibitem[Liang et~al.(2018{\natexlab{a}})Liang, Long, Zhu, Wang, and
+  Sun]{liang2018apple}
+Qiaokang Liang, Jianyong Long, Wei Zhu, Yaonan Wang, and Wei Sun.
+\newblock Apple recognition based on convolutional neural network framework.
+\newblock In {\em 2018 13th World Congress on Intelligent Control and
+  Automation (WCICA)}, pages 1751--1756. IEEE, 2018{\natexlab{a}}.
+
+\bibitem[Liang et~al.(2018{\natexlab{b}})Liang, Zhu, Long, Wang, Sun, and
+  Wu]{liang2018real}
+Qiaokang Liang, Wei Zhu, Jianyong Long, Yaonan Wang, Wei Sun, and Wanneng Wu.
+\newblock A real-time detection framework for on-tree mango based on ssd
+  network.
+\newblock In {\em International Conference on Intelligent Robotics and
+  Applications}, pages 423--436. Springer, 2018{\natexlab{b}}.
+
+\bibitem[Lin et~al.(2017{\natexlab{a}})Lin, Doll{\'a}r, Girshick, He,
+  Hariharan, and Belongie]{lin2017feature}
+Tsung-Yi Lin, Piotr Doll{\'a}r, Ross Girshick, Kaiming He, Bharath Hariharan,
+  and Serge Belongie.
+\newblock Feature pyramid networks for object detection.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 2117--2125, 2017{\natexlab{a}}.
+
+\bibitem[Lin et~al.(2017{\natexlab{b}})Lin, Goyal, Girshick, He, and
+  Doll{\'a}r]{lin2017focal}
+Tsung-Yi Lin, Priya Goyal, Ross Girshick, Kaiming He, and Piotr Doll{\'a}r.
+\newblock Focal loss for dense object detection.
+\newblock In {\em Proceedings of the IEEE international conference on computer
+  vision}, pages 2980--2988, 2017{\natexlab{b}}.
+
+\bibitem[Lin et~al.(2014)Lin, Maire, Belongie, Hays, Perona, Ramanan,
+  Doll{\'a}r, and Zitnick]{lin2014microsoft}
+Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva
+  Ramanan, Piotr Doll{\'a}r, and C~Lawrence Zitnick.
+\newblock Microsoft coco: Common objects in context.
+\newblock In {\em European conference on computer vision}, pages 740--755.
+  Springer, 2014.
+
+\bibitem[Liu et~al.(2016)Liu, Anguelov, Erhan, Szegedy, Reed, Fu, and
+  Berg]{liu2016ssd}
+Wei Liu, Dragomir Anguelov, Dumitru Erhan, Christian Szegedy, Scott Reed,
+  Cheng-Yang Fu, and Alexander~C Berg.
+\newblock Ssd: Single shot multibox detector.
+\newblock In {\em European conference on computer vision}, pages 21--37.
+  Springer, 2016.
+
+\bibitem[Liu et~al.(2018)Liu, Chen, Aditya, Sivakumar, Dcunha, Qu, Taylor, Das,
+  and Kumar]{liu2018robust}
+Xu~Liu, Steven~W Chen, Shreyas Aditya, Nivedha Sivakumar, Sandeep Dcunha, Chao
+  Qu, Camillo~J Taylor, Jnaneshwar Das, and Vijay Kumar.
+\newblock Robust fruit counting: Combining deep learning, tracking, and
+  structure from motion.
+\newblock In {\em 2018 IEEE/RSJ International Conference on Intelligent Robots
+  and Systems (IROS)}, pages 1045--1052. IEEE, 2018.
+
+\bibitem[Long et~al.(2015)Long, Shelhamer, and Darrell]{long2015fully}
+Jonathan Long, Evan Shelhamer, and Trevor Darrell.
+\newblock Fully convolutional networks for semantic segmentation.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 3431--3440, 2015.
+
+\bibitem[Lucas et~al.(1981)Lucas, Kanade, et~al.]{lucas1981iterative}
+Bruce~D Lucas, Takeo Kanade, et~al.
+\newblock An iterative image registration technique with an application to
+  stereo vision.
+\newblock 1981.
+
+\bibitem[Mai et~al.(2018)Mai, Zhang, and Meng]{mai2018faster}
+Xiaochun Mai, Hong Zhang, and Max Q-H Meng.
+\newblock Faster r-cnn with classifier fusion for small fruit detection.
+\newblock In {\em 2018 IEEE International Conference on Robotics and Automation
+  (ICRA)}, pages 7166--7172. IEEE, 2018.
+
+\bibitem[McGuire(2015)]{mcguire2015fao}
+Shelley McGuire.
+\newblock Fao, ifad, and wfp. the state of food insecurity in the world 2015:
+  meeting the 2015 international hunger targets: taking stock of uneven
+  progress. rome: Fao, 2015, 2015.
+
+\bibitem[Pothen and Nuske(2016)]{pothen2016texture}
+Zania~S Pothen and Stephen Nuske.
+\newblock Texture-based fruit detection via images using the smooth patterns on
+  the fruit.
+\newblock In {\em 2016 IEEE International Conference on Robotics and Automation
+  (ICRA)}, pages 5171--5176. IEEE, 2016.
+
+\bibitem[Rahnemoonfar and Sheppard(2017)]{rahnemoonfar2017deep}
+Maryam Rahnemoonfar and Clay Sheppard.
+\newblock Deep count: fruit counting based on deep simulated learning.
+\newblock {\em Sensors}, 17\penalty0 (4):\penalty0 905, 2017.
+
+\bibitem[Redmon et~al.(2016)Redmon, Divvala, Girshick, and
+  Farhadi]{redmon2016you}
+Joseph Redmon, Santosh Divvala, Ross Girshick, and Ali Farhadi.
+\newblock You only look once: Unified, real-time object detection.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 779--788, 2016.
+
+\bibitem[Redmon and Farhadi(2017)]{redmon2017yolo9000}
+Joseph Redmon and Ali Farhadi.
+\newblock Yolo9000: better, faster, stronger.
+\newblock In {\em Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 7263--7271, 2017.
+
+\bibitem[Redmon and Farhadi(2018)]{redmon2018yolov3}
+Joseph Redmon and Ali Farhadi.
+\newblock Yolov3: An incremental improvement.
+\newblock {\em arXiv preprint arXiv:1804.02767}, 2018.
+
+\bibitem[Ren et~al.(2015)Ren, He, Girshick, and Sun]{ren2015faster}
+Shaoqing Ren, Kaiming He, Ross Girshick, and Jian Sun.
+\newblock Faster r-cnn: Towards real-time object detection with region proposal
+  networks.
+\newblock In {\em Advances in neural information processing systems}, pages
+  91--99, 2015.
+
+\bibitem[Sa et~al.(2016)Sa, Ge, Dayoub, Upcroft, Perez, and
+  McCool]{sa2016deepfruits}
+Inkyu Sa, Zongyuan Ge, Feras Dayoub, Ben Upcroft, Tristan Perez, and Chris
+  McCool.
+\newblock Deepfruits: A fruit detection system using deep neural networks.
+\newblock {\em Sensors}, 16\penalty0 (8):\penalty0 1222, 2016.
+
+\bibitem[Sermanet et~al.(2013)Sermanet, Eigen, Zhang, Mathieu, Fergus, and
+  LeCun]{sermanet2013overfeat}
+Pierre Sermanet, David Eigen, Xiang Zhang, Micha{\"e}l Mathieu, Rob Fergus, and
+  Yann LeCun.
+\newblock Overfeat: Integrated recognition, localization and detection using
+  convolutional networks.
+\newblock {\em arXiv preprint arXiv:1312.6229}, 2013.
+
+\bibitem[Simonyan and Zisserman(2014)]{simonyan2014very}
+Karen Simonyan and Andrew Zisserman.
+\newblock Very deep convolutional networks for large-scale image recognition.
+\newblock {\em arXiv preprint arXiv:1409.1556}, 2014.
+
+\bibitem[Stein et~al.(2016)Stein, Bargoti, and Underwood]{stein2016image}
+Madeleine Stein, Suchet Bargoti, and James Underwood.
+\newblock Image based mango fruit detection, localisation and yield estimation
+  using multiple view geometry.
+\newblock {\em Sensors}, 16\penalty0 (11):\penalty0 1915, 2016.
+
+\bibitem[Storn and Price(1997)]{storn1997differential}
+Rainer Storn and Kenneth Price.
+\newblock Differential evolution--a simple and efficient heuristic for global
+  optimization over continuous spaces.
+\newblock {\em Journal of global optimization}, 11\penalty0 (4):\penalty0
+  341--359, 1997.
+
+\bibitem[Tao et~al.(2018)Tao, Zhou, Wang, and Shen]{tao2018rapid}
+Yongting Tao, Jun Zhou, Kai Wang, and Wenlong Shen.
+\newblock Rapid detection of fruits in orchard scene based on deep neural
+  network.
+\newblock In {\em 2018 ASABE Annual International Meeting}, page~1. American
+  Society of Agricultural and Biological Engineers, 2018.
+
+\bibitem[Taylor and Nitschke(2017)]{taylor2017improving}
+Luke Taylor and Geoff Nitschke.
+\newblock Improving deep learning using generic data augmentation.
+\newblock {\em arXiv preprint arXiv:1708.06020}, 2017.
+
+\bibitem[Tian et~al.(2019)Tian, Yang, Wang, Wang, Li, and Liang]{tian2019apple}
+Yunong Tian, Guodong Yang, Zhe Wang, Hao Wang, En~Li, and Zize Liang.
+\newblock Apple detection during different growth stages in orchards using the
+  improved yolo-v3 model.
+\newblock {\em Computers and Electronics in Agriculture}, 157:\penalty0
+  417--426, 2019.
+
+\bibitem[Uijlings et~al.(2013)Uijlings, Van De~Sande, Gevers, and
+  Smeulders]{uijlings2013selective}
+Jasper~RR Uijlings, Koen~EA Van De~Sande, Theo Gevers, and Arnold~WM Smeulders.
+\newblock Selective search for object recognition.
+\newblock {\em International journal of computer vision}, 104\penalty0
+  (2):\penalty0 154--171, 2013.
+
+\bibitem[Wang et~al.(2016)Wang, Zou, Tang, Luo, and Feng]{wang2016localisation}
+Chenglin Wang, Xiangjun Zou, Yunchao Tang, Lufeng Luo, and Wenxian Feng.
+\newblock Localisation of litchi in an unstructured environment using binocular
+  stereo vision.
+\newblock {\em Biosystems Engineering}, 145:\penalty0 39--51, 2016.
+
+\bibitem[Wang et~al.(2013)Wang, Nuske, Bergerman, and Singh]{wang2013automated}
+Qi~Wang, Stephen Nuske, Marcel Bergerman, and Sanjiv Singh.
+\newblock Automated crop yield estimation for apple orchards.
+\newblock In {\em Experimental robotics}, pages 745--758. Springer, 2013.
+
+\bibitem[Zhang and Kovacs(2012)]{zhang2012application}
+Chunhua Zhang and John~M Kovacs.
+\newblock The application of small unmanned aerial systems for precision
+  agriculture: a review.
+\newblock {\em Precision agriculture}, 13\penalty0 (6):\penalty0 693--712,
+  2012.
+
+\bibitem[Zlocha et~al.(2019)Zlocha, Dou, and Glocker]{zlocha2019improving}
+Martin Zlocha, Qi~Dou, and Ben Glocker.
+\newblock Improving retinanet for ct lesion detection with dense masks from
+  weak recist labels.
+\newblock {\em arXiv preprint arXiv:1906.02283}, 2019.
+
+\end{thebibliography}
