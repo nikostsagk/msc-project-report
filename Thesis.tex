@@ -6,7 +6,10 @@
 \usepackage{natbib}            	% Use Natbib style for the refs.
 \usepackage{xcolor}			% Footnotes on tables
 \usepackage{footnote}		% Footnotes on tables
+\usepackage[bottom]{footmisc} % Footnotes on the botom
 \usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{booktabs}
 \hypersetup{colorlinks=true}   	% Set to false for black/white printing
 \input{Definitions}            		% Include your abbreviations
 %% ----------------------------------------------------------------
@@ -23,12 +26,10 @@
 \keywords   {}
 \maketitle
 \begin{abstract}
-This work investigates the apple detection problem using the RetinaNet object detection framework and the VGG architecture. After all necessary modifications and hyper-parameter tuning, puts under examination how performance scales with the backbone's network depth. Furthermore, it examines performance through four different proposed deployments for the side-network. An analysis of the relation between performance and training size finds that 10 samples are enough to achieve adequate performance. It also discovers that 200 samples are enough to achieve state-of-the-art performance. Moreover, it proposes a novel lightweight model that achieves an F1-score of 0.908, and inference time of nearly 70FPS outperforming previous state-of-the-art models in both performance and detection rate. Finally, it discusses the results, addresses the model's limitations and weaknesses and provides insights for future work. 
+This work aims to investigate the apple detection problem through the deployment of the RetinaNet object detection framework in conjunction with the VGG architecture. Following hyper-parameters' optimisation, the performance scaling with the backbone's network depth is examined through four different proposed deployments for the side-network. Analysis of the relationship between performance and training size establishes that 10 samples are enough to achieve adequate performance, while 200 samples are enough to achieve state-of-the-art performance. Moreover, a novel lightweight model is proposed that achieves an F1-score of 0.908 and inference time of nearly 70FPS. These results outperform previous state-of-the-art models in both performance and detection rates. Finally, the results are discussed regarding the model's limitations, and insights for future work are provided. 
 \end{abstract}
 
-\statementoforiginality{
-I have acknowledged all sources, and identified any content taken from elsewhere. RetinaNet is based on the open-source implementation provided by Fizyr, licensed under the Apache License 2.0, and is appropriately cited. I did all the work myself and have not been helped by anyone else. The material in the report is genuine, and I have included all the necessary links with my data/code. I have not submitted any part of this work for another assessment. My work did not involve human participants, their cells or data, or animals.
-}
+\statementoforiginality{I have acknowledged all sources and identified any content taken from elsewhere. RetinaNet is based on the open-source implementation provided by Fizyr, licensed under the Apache License 2.0, and is appropriately cited. I did all the work myself and have not been helped by anyone else. The material in the report is genuine, and I have included all the necessary links with my data/code. I have not submitted any part of this work for another assessment. My work did not involve human participants, their cells or data, or animals.}
 \tableofcontents
 \listoffigures
 \listoftables
@@ -51,6 +52,7 @@ $mAP$ & mean average precision \\
 $MLP$ & multi-layer perceptron \\
 $NIR$ & near infra-red \\
 $NMS$ & non-maximum suppression \\
+$OHEM$ & online hard example mining \\
 $PCA$ & principal component analysis \\
 $ReLU$ & Rectified Linear Unit \\
 $RGB$ & Red, Green and Blue \\
@@ -64,11 +66,12 @@ $WS$ & watershed segmentation \\
 }
 
 %\acknowledgements{Thanks to no one.}
-%\dedicatory{"If I have seen further it is by standing on the shoulders of Giants." -Isaac Newton}
+\dedicatory{\begin{flushright}"If I have seen further it is by standing on the shoulders of Giants." \\-Isaac Newton\end{flushright}}
 \mainmatter
 %% ----------------------------------------------------------------
 \include{Introduction}
 \include{ObjectDetection}
+\include{RetinaNet}
 \include{Experiment}
 \include{Results}
 \include{Conclusion}

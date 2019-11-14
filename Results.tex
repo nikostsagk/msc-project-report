@@ -1,16 +1,16 @@
 %% ----------------------------------------------------------------
 %% Results.tex
 %% ---------------------------------------------------------------- 
-\chapter{Results And Discussion} \label{Chapter:Results}
+\chapter{Results and Discussion} \label{Chapter:Results}
 
 \section{VGG Architecture Comparisons}
-To estimate the impact of the backbone network and the side-network, each RetinaNet proposed architecture gets deployed on each VGG network separately. \fref{fig1} and \ref{fig2} show how AP and the F1-score scales with the depth of the backbone network.   
+To estimate the impact of the backbone's depth and the side-network's architecture, each RetinaNet proposed architecture gets deployed on each VGG network separately. \fref{ch5:fig1} and \ref{ch5:fig2} show how AP and F1-score scale with the depth of the backbone network.   
 
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=\textwidth]{figures/ch4/fig1.pdf}
-  \caption{Comparative results of Avg. Precision versus the four VGG models, for each proposed RetinaNet model. Results were averaged over 10 times.}
-  \label{fig1}
+  \includegraphics[width=\textwidth]{figures/ch5/fig1.pdf}
+  \caption{Comparative results of Avg. Precision versus the four VGG models, for each proposed RetinaNet model. Results are averaged over 10 times.}
+  \label{ch5:fig1}
 \end{figure}
 
 \begin{table}[!htb]
@@ -27,20 +27,20 @@ To estimate the impact of the backbone network and the side-network, each Retina
   \bottomrule
   \end{tabular}
   }
-  \caption{Indicative values of Avg. Precision for the selected four VGG models, for each proposed RetinaNet model (\fref{fig1}). Parentheses indicate the input resolution.}
-  \label{tab1}
+  \caption{Indicative values of the Avg. Precision for the selected four VGG models, for each proposed RetinaNet model (\fref{ch5:fig1}). Parentheses indicate the input resolution.}
+  \label{ch5:tab1}
 \end{table}
 
-From \fref{fig1}, it can be seen that the average precision scales with the depth of the network steadily. The increment rate is not large enough  to warrant exploring deeper models, as the number of parameters and training time increases adversely. The average precision versus depth diagram, shows that indeed, the depth of the network helps the network detecting more true positives. 
+From \fref{ch5:fig1}, it can be seen that the average precision scales with the depth of the network steadily. The increment rate is not large enough to warrant exploring deeper models, as the number of parameters and training time increases adversely. The average precision versus depth diagram shows that indeed, the depth of VGG helps the model detecting more relevant objects.
 
-However, the F1-score as shown, in \fref{fig2} does not follow this trend, as it reaches its climax under VGG16 for the $\text{P}_\text{i}\text{Multi}$ and $\text{C}_\text{i}\text{Reduced}$ models, while the Original model exhibits a slight increase.
-F1-score, after VGG16, illustrates that neither the depth of the model, nor the side-network deployment can confine the model from predicting false positives.
+However, the F1-score as shown in \fref{ch5:fig2}, does not follow this trend, as it reaches its climax under VGG16 for the $\text{P}_\text{i}\text{Multi}$ and $\text{C}_\text{i}\text{Reduced}$ models, while the Original model exhibits a slight increase.
+F1-score, after VGG16, illustrates that neither the depth of the model nor the side-network deployment can confine the model from predicting false positives.
 
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=\textwidth]{figures/ch4/fig2.pdf}
-  \caption{Comparative results of F1-score versus the four VGG models, for each proposed RetinaNet model. Results were averaged over 10 times.}
-  \label{fig2}
+  \includegraphics[width=\textwidth]{figures/ch5/fig2.pdf}
+  \caption{Comparative results of the F1-score versus the four VGG models, for each proposed RetinaNet model. Results are averaged over 10 times.}
+  \label{ch5:fig2}
 \end{figure}
 
 \begin{table}[!htb]
@@ -57,15 +57,13 @@ F1-score, after VGG16, illustrates that neither the depth of the model, nor the 
   \bottomrule
   \end{tabular}
   }
-  \caption{Indicative values of F1-score for the selected four VGG models, for each proposed RetinaNet model (\fref{fig2}). Parentheses indicate the input resolution.}
-  \label{tab2}
+  \caption{Indicative values of F1-score for the selected four VGG models, for each proposed RetinaNet model (\fref{ch5:fig2}). Parentheses indicate the input resolution.}
+  \label{ch5:tab2}
 \end{table}
 
-Concerning the side-network, apart from $\text{C}_\text{i}\text{Reduced}$, the rest RetinaNet deployments, did not demonstrate any striking difference. Under most VGG architectures, $\text{C}_\text{i}\text{Reduced}$ outperformed notably the rest of the architectures, especially in AP. This observation manifests that the problem under study is not affected considerably by the complexity of the side-network in ways such as: integration of high-level semantic feature maps, attaching separate classifier-regressor heads or increasing the depth. Nonetheless, a lighter version of the original RetinaNet, inspired by the SSD pipeline, addresses the apple detection problem through the ACFR dataset satisfactorily.
+Concerning the side-network, apart from $\text{C}_\text{i}\text{Reduced}$, the rest RetinaNet deployments did not demonstrate any striking difference. Particularly, the Original and the $\text{P}_3\text{P}_4\text{P}_5$ deployments performed similarly, confirming the prior speculations about layer redundancy. $\text{P}_3\text{P}_4\text{P}_5$ achieved almost the same accuracy with a 10 FPS gain in inference time. $\text{P}_\text{i}\text{Multi}$ demonstrated that separate sub-network heads did not influence performance, but surprisingly, the excessive parameters had minor impact on the inference time. Under most VGG depths, $\text{C}_\text{i}\text{Reduced}$ outperformed notably the rest of the architectures, especially in AP. \textbf{This observation manifests that the problem under study is not affected considerably by the complexity of the side-network in ways such as: integrating high-level semantic feature maps, attaching separate classifier-regressor heads or increasing the depth.} Nonetheless, a lighter version of the original RetinaNet, inspired by the SSD pipeline, addresses the apple detection problem through the ACFR dataset satisfactorily.
 
-\tref{tab3} shows that inference time scales with the depth of the model upon increasing the total parameters, apart from the VGG16 and VGG19, which have the same inference time. Lightweight RetinaNet - $\text{C}_\text{i}\text{Reduced}$, holds the highest detection rates among the rest models, as expected.
-
-%$\text{C}_\text{i}\text{Reduced}$ is the lightest model with the smallest memory footprint among the rest; only 19.8M parameters coupled with VGG16, while VGG19 has 20M parameters itself. It achieves high rate detections while maintaining the highest AP = 0.936.
+\tref{ch5:tab3} shows that inference time scales with the depth of the model upon increasing the total parameters, apart from the VGG16 and VGG19, which have the same inference time. Lightweight RetinaNet - $\text{C}_\text{i}\text{Reduced}$, as expected, holds the highest detection rates among the rest models.
 
 \begin{table}[!htb]
   \centering
@@ -82,38 +80,41 @@ Concerning the side-network, apart from $\text{C}_\text{i}\text{Reduced}$, the r
   \end{tabular}
   }
   \caption{Inference time for every VGG. Detection rates depend heavily on the No. of parameters of the model and the input resolution. However, the transition from VGG16 to VGG19 did not show any change.}
-  \label{tab3}
+  \label{ch5:tab3}
 \end{table}
 
-All VGG models were initialised upon the pre-trained ImageNet weights. Training with random weight initialisation delayed convergence, but did not show any improvement in the results as demonstrated in \cite{bargoti2017deep}. Transfer learning among the VGG models, that is transferring the weights progressively from VGG11 to VGG19 (\cite{simonyan2014very}), did not show any other improvement in performance rather than saving training from a couple of epochs ($\sim3$ minutes with a resolution of $202\times308$).
+All VGG models were initialised upon the pre-trained ImageNet weights. Training with random weight initialisation delayed convergence but did not show any improvement in the results, as demonstrated in \cite{bargoti2017deep}. Transfer learning between the VGG models, that is transferring the weights progressively from VGG11 to VGG19 (\cite{simonyan2014very}), did not show any other improvement in performance rather than saving training from a couple of epochs ($\sim3$ minutes with a resolution of $202\times308$).
 
 
-\section{Performance - Training Size Relation}
+\section{Performance - Training Size Relation}\label{size_relation}
 
 This section presents a performance analysis of RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (202)	over the size of the training dataset. For each training subset, N samples were drawn from the training dataset randomly, without replacement (negative samples were discarded). 
 
  \begin{figure}[!htb]
   \centering
   \subfigure[]{
-    \includegraphics[width=0.9\textwidth]{figures/ch4/fig3_1.pdf}
-    \label{fig3_1}
+    \includegraphics[width=0.9\textwidth]{figures/ch5/fig3_1.pdf}
+    \label{ch5:fig3_1}
   }
   \subfigure[]{
-    \includegraphics[width=0.9\textwidth]{figures/ch4/fig3_2.pdf}
-    \label{fig3_2}
+    \includegraphics[width=0.9\textwidth]{figures/ch5/fig3_2.pdf}
+    \label{ch5:fig3_2}
   }
   \caption{Avg. Precision and F1-score as a function of the number of training images on RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (202), for each VGG network.}
-  \label{fig3}
+  \label{ch5:fig3}
 \end{figure}
 
-The subsets were created once and then used for 10 training sessions each. The models were prone to overfitting, particularly those trained on small datasets; thus, early stopping was implemented to obtain the maximum possible performance. \fref{fig3} makes evident, that the model performs satisfactorily already from the first 10 samples. Furthermore, 200 to 500 samples are enough to achieve state-of-the-art performance. From the first 6 samples, RetinaNet outperforms Faster R-CNN in the work of \cite{bargoti2017deep} by 0.1 in every consecutive training subset.
+The subsets were created once and then used for 10 training sessions each. The models were prone to overfitting, particularly those trained on small datasets; thus, early stopping was implemented to obtain the maximum possible performance. \fref{ch5:fig3} makes evident that the model performs competently already from the first 10 samples. Furthermore, 200 to 500 samples are enough to achieve state-of-the-art performance. From the first 6 samples, RetinaNet outperforms Faster R-CNN in the work of \cite{bargoti2017deep} by 0.1 in every consecutive training subset.
 
 
 
-Regarding backbone's network depth, VGG16 and VGG19 show their superiority over the rest architectures consistently. Another interesting feature of \fref{fig3} is that in training sessions consisting more than 10 samples, VGG11 attained the same performance with VGG16-19 only by decupling the dataset.
+Regarding the backbone's network depth, VGG16 and VGG19 show their superiority over the rest architectures consistently. Another interesting feature of \fref{ch5:fig3} is that in training sessions consisting more than 10 samples, VGG11 attained the same performance with VGG16-19 only by decupling the dataset.
 
 \section{Peak Detection and Evaluation}
-To obtain maximum performance, RetinaNet - $\text{C}_\text{i}\text{Reduced}$ was trained on VGG16, using three resolutions ($202\times308$, $512\times781$ and $800\times1220$) as described in \sref{training_details}, with F1-score being as the primary evaluation metric. Models presented here were trained initially on the training dataset and then both on the training and validation dataset, while being evaluated on the held-out testing dataset.
+To obtain maximum performance, RetinaNet - $\text{C}_\text{i}\text{Reduced}$ was trained on VGG16, using three resolutions ($202\times308$, $512\times781$ and $800\times1220$) as described in \sref{training_details}, with F1-score being the primary evaluation metric. Models presented here were trained initially on the training dataset, and then both on the training and validation dataset, while being evaluated on the held-out testing dataset.
+
+\tref{ch5:tab4} shows that performance increases with resolution, with the best model achieving a maximum F1-score of \textbf{0.907}, outperforming the previous state-of-the-art model (\cite{bargoti2017deep}). \cite{liang2018apple} gave more emphasis on real-time detection achieving $\sim$44 FPS using the SSD(300), while RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (VGG16)[202] attains a detection rate of $\sim$70 FPS outperforming both of their models. RetinaNet - $\text{C}_\text{i}\text{Reduced}$(VGG16), beaten SSD in performance and inference time by using even smaller resolution. A resolution of 800 improved performance, in terms of F1-score by $\sim1\%$, but with a considerable increase in training time versus the smaller resolution of 202. Specifically, the models trained on the original image dimensions ($202\times308$), required x4 times less time to train in comparison to the ones that used ($800\times1220$) and also, they had x5.5 times less inference time (65.2 FPS vs 12.6FPS).
+Moreover, from \tref{ch5:tab4} it can be seen that, while the IoU threshold was set equal to 0.2, as in the previous sections, the mean IoU between ground truths and predictions is quite high, making very accurate localisations.
 
 \begin{savenotes}
 \begin{table}[!htb]
@@ -140,40 +141,34 @@ To obtain maximum performance, RetinaNet - $\text{C}_\text{i}\text{Reduced}$ was
   \end{tabular}
   }
   \caption{Comparing performance of RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (VGG16), trained on the training and on the combined training - validation set, with the state-of-the-art models. Parentheses indicate resolutions. Models were evaluated on $\text{IoU}_{th}=0.2$ and $\text{NMS}_{th}=0.3$.}
-  \label{tab4}
+  \label{ch5:tab4}
 \end{table}
 \end{savenotes}
 
-\tref{tab4} shows that performance increases with resolution, with the best model achieving a maximum F1-score of \textbf{0.907}, outperforming the previous state-of-the-art model (\cite{bargoti2017deep}). \cite{liang2018apple} gave more emphasis on real-time detection achieving 43.47 FPS using the SSD(300).
-
-RetinaNet - $\text{C}_\text{i}\text{Reduced}$(VGG16), beaten SSD in performance and inference time by using even smaller resolution. A resolution of 800 improved performance, in terms of F1-score by $\sim1\%$, but with a considerable drop in training time versus the smaller resolution of 202. Specifically, models trained on the original image dimensions ($202\times308$), required x4 times less time to train in comparison to the ones that used ($800\times1220$) and also, they had x5.5 times less inference time (12.6FPS vs 65.2 FPS).
-
-Moreover, from \tref{tab4} it can be seen that, while the IoU threshold was set equal to 0.2, as in the previous sections, the mean IoU between ground truths and predictions is quite high, making very accurate localisations.
-
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=0.6\textwidth]{figures/ch4/fig4.pdf}
+  \includegraphics[width=0.6\textwidth]{figures/ch5/fig4.pdf}
   \caption{Precision - Recall curves for the RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (VGG16). AP is defined by the area under the curve, while F1-score is the point on the curve where Precision and Recall take maximum values.}
-  \label{fig4}
+  \label{ch5:fig4}
 \end{figure} 
 
-\fref{fig4} illustrates the precision-recall curves of the trained models presented in \tref{tab4}. All models maintain very high precision for all recall levels. Precision stays around 1.0 for most recall values and starts to drop after recall takes higher values than 0.8.
+\fref{ch5:fig4} illustrates the precision-recall curves of the trained models presented in \tref{ch5:tab4}. All models maintain very high precision for all recall levels. Precision stays around 1.0 for most recall values and starts to drop after recall takes values higher than 0.8.
 
 \subsection{Performance at Various IoU  and NMS Thresholds}\label{nms_threshold}
-In most competitions such as in PASCAL-VOC, a prediction to be considered as positive needs at least an overlap of 0.5 with the ground truth. However, \cite{bargoti2017deep} state that an IoU threshold equal to 0.2 is adequate for accurate fruit detection, eliminating the error cases where the localisation is imperfect. \fref{fig5_1} shows how the precision-recall curve changes under different IoU thresholds. The model continues maintaining the same performance even under more strict settings such as raising the $\text{IoU}_{th}$ from 0.2 to 0.5. Only for $\text{IoU}_{th} \geq 0.8$, performance starts to degenerate.
+In most competitions such as in PASCAL-VOC, a prediction to be considered as positive needs at least an overlap of 0.5 with the ground truth. However, \cite{bargoti2017deep} state that an IoU threshold equal to 0.2 is sufficient for accurate fruit detection, eliminating the error cases where the localisation is imperfect. \fref{ch5:fig5_1} shows how the precision-recall curve changes under different IoU thresholds. The model maintains the same performance even under more strict settings such as raising the $\text{IoU}_{th}$ from 0.2 to 0.5. Only for $\text{IoU}_{th} \geq 0.8$, performance starts to degenerate.
 
  \begin{figure}[!htb]
   \centering
   \subfigure[]{
-    \includegraphics[width=0.45\textwidth]{figures/ch4/fig5_1.pdf}
-    \label{fig5_1}
+    \includegraphics[width=0.45\textwidth]{figures/ch5/fig5_1.pdf}
+    \label{ch5:fig5_1}
   }
   \subfigure[]{
-    \includegraphics[width=0.45\textwidth]{figures/ch4/fig5_2.pdf}
-    \label{fig5_2}
+    \includegraphics[width=0.45\textwidth]{figures/ch5/fig5_2.pdf}
+    \label{ch5:fig5_2}
   }
   \caption{(a) Precision - Recall curves for the RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (VGG16) under various $\text{IoU}_{th}$. Model's performance remains supreme even by increasing  $\text{IoU}_{th}$ from 0.2 to 0.5. (b) Performance over $\text{NMS}_{th}$. Performance is not very sensitive for $\text{NMS}_{th}$ between 0.2 and 0.6.}
-  \label{fig5}
+  \label{ch5:fig5}
 \end{figure}
 
 \begin{table}[!htb]
@@ -189,33 +184,33 @@ In most competitions such as in PASCAL-VOC, a prediction to be considered as pos
   \end{tabular}
   }
   \caption{Indicative values of Avg. Precision and F1-score for selected $\text{NMS}_{th}$ at the default $\text{IoU}_{th}=0.2$. $\text{NMS}_{th}$ of 0.4 pushes performance a bit further.}
-  \label{tab5}
+  \label{ch5:tab5}
 \end{table}
 
 \begin{figure}[!ht]
   \centering
   \subfigure[$\text{NMS}_{th}=0.3$]{
-    \includegraphics[width=0.38\textwidth]{figures/ch4/fig6_1.png}
-    \label{fig6_1}
+    \includegraphics[width=0.38\textwidth]{figures/ch5/fig6_1.png}
+    \label{ch5:fig6_1}
   }
   \subfigure[$\text{NMS}_{th}=0.5$]{
-    \includegraphics[width=0.38\textwidth]{figures/ch4/fig6_2.png}
-    \label{fig6_2}
+    \includegraphics[width=0.38\textwidth]{figures/ch5/fig6_2.png}
+    \label{ch5:fig6_2}
   }
   
   \subfigure[$\text{NMS}_{th}=0.3$]{
-    \includegraphics[width=0.38\textwidth]{figures/ch4/fig6_3.png}
-    \label{fig6_3}
+    \includegraphics[width=0.38\textwidth]{figures/ch5/fig6_3.png}
+    \label{ch5:fig6_3}
   }
   \subfigure[$\text{NMS}_{th}=0.5$]{
-    \includegraphics[width=0.38\textwidth]{figures/ch4/fig6_4.png}
-    \label{fig6_4}
+    \includegraphics[width=0.38\textwidth]{figures/ch5/fig6_4.png}
+    \label{ch5:fig6_4}
   }
-  \caption{$\text{NMS}_{th}=0.3$ performs better against clusters (top-left), while fails in occluded fruits such as in the fruits located in the bottom and the far left of the bottom-left image. $\text{NMS}_{th}=0.5$ succeeds in occluded instances, where lower thresholds fail, while fails separating tight clusters resulting in multiple predictions (top-right).}
-  \label{ch4:fig6}
+  \caption{$\text{NMS}_{th}=0.3$ performs better against clusters (top-left), while fails in occluded fruits such as in the fruits located in the bottom and the far left of the bottom-left image. $\text{NMS}_{th}=0.5$ succeeds in occluded instances, where lower thresholds fail, while fails separating tight clusters resulting in multiple predictions (top-right). Green and red boxes indicate ground truth and predicted annotations respectively.}
+  \label{ch5:fig6}
 \end{figure}
 
-NMS is responsible for suppressing detections with an overlap over a certain threshold. While it is undoubtedly necessary to avoid multiple detections over the same object, it can be harmful in fruit detection problems. The detector is fundamentally developed to suppress all predictions with $\text{IoU}\geq\text{NMS}_{th}$ in a query, but one. The dataset contains many fruits in tight clusters or occluded by others, thus the right $\text{NMS}_{th}$ is inextricably linked to the dataset, as it depends on its levels of occlusion between its instances. However, the capability of RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (VGG16) to make precise localisations with an mIoU of 0.835 (\tref{tab4}), relaxes the $\text{NMS}_{th}$ bounds to the values in \tref{tab5}. \fref{ch4:fig6} contains sample predictions with different $\text{NMS}_{th}$ values and their impact.
+NMS is responsible for suppressing detections with an overlap over a certain threshold. While it is undoubtedly necessary to avoid multiple detections over the same object, it can be harmful in the fruit detection problem. The detector is fundamentally developed to suppress all predictions with $\text{IoU}\geq\text{NMS}_{th}$ in a query, but one. The dataset contains many fruits in tight clusters or occluded by others; thus the right $\text{NMS}_{th}$ is inextricably linked to the dataset, as it depends on its levels of occlusion between its instances. However, the capability of RetinaNet - $\text{C}_\text{i}\text{Reduced}$ (VGG16) to make precise localisations with an mIoU of 0.835 (\tref{ch5:tab4}), relaxes the $\text{NMS}_{th}$ bounds to the values in \tref{ch5:tab5}. \fref{ch5:fig6} contains sample predictions with different $\text{NMS}_{th}$ values and their impact.
 
 \subsection{Counting}
-The dataset does not specify any structure among the trellised trees in the pictures, thus structured yield estimation in the orchard block is impossible. However, $\Delta E$ represents overall count estimates, by using the normalised absolute error over the total number of instances in the dataset. $\Delta E$ seems to take smaller values as F1-score increase, giving an unstructured yield estimate for the whole dataset through the total number of predictions. Instead of tuning the detection confidence threshold to minimise $\Delta E$, it was optimised to take the maximum value, while keeping F1-score unchanged.
+The dataset does not specify any structure among the trellised trees in the pictures; hence structured yield estimation in the orchard block is impossible. However, $\Delta E$ represents overall count estimates by using the normalised absolute error over the total number of instances in the dataset. $\Delta E$ seems to take smaller values as F1-score increases, giving an unstructured yield estimate for the whole dataset through the total number of predictions. Finally, regarding detector's confidence threshold\footnote{Models' confidence thresholds can be seen in \fref{ch5:fig4}.}, it was optimised to maximise F1-score instead of minimising $\Delta E$.

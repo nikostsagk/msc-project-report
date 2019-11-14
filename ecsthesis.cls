@@ -63,6 +63,8 @@
 \def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else
 \hbox{}
 \thispagestyle{empty}
+\setlength{\intextsep}{2em} % Vertical space above & below [h] floats
+\setlength{\textfloatsep}{2em} % Vertical space below (above) [t] ([b]) floats
 
 \if@twocolumn\hbox{}\newpage\fi\fi\fi}
 \usepackage{amsmath,amsfonts,amssymb,amscd,amsthm,xspace}
@@ -134,7 +136,7 @@
 \newcommand*{\FACULTY}[1]{\def\FACNAME{#1}}
 \newcommand*{\subject}[1]{\def\subjectname{#1}}
 \newcommand*{\keywords}[1]{\def\keywordnames{#1}}
-\supervisor  {Dr. Jize Yan}
+\supervisor  {Dr Jize Yan}
 \examiner    {Professor Kirk Martinez}
 \degree      {MSc Artificial Intelligence}
 \authors     {}
@@ -219,6 +221,7 @@
   \global\let\author\relax
   \global\let\date\relax
   \global\let\and\relax
+  \cleardoublepage
 }
 \newenvironment{abstract}
 {
@@ -272,6 +275,7 @@
     \if@restonecol\twocolumn\fi
 
 }\end{spacing}
+\cleardoublepage
 }
 
 \newcommand\statementoforiginality[1]{
@@ -281,7 +285,8 @@
 \null\vfil
 \begin{center}{\LARGE \bf Statement of Originality \par}\end{center}
 {\normalsize #1}
-\vfil\vfil\null
+\vfil\vfil\null\null
+\cleardoublepage
 }
 
 \renewcommand\listoffigures{
@@ -301,6 +306,8 @@
     \if@restonecol\twocolumn\fi
 
 }\end{spacing}
+\null
+\cleardoublepage
 }
 
 \renewcommand\listoftables{
@@ -319,10 +326,12 @@
     \@starttoc{lot}
     \if@restonecol\twocolumn\fi
 }\end{spacing}
+\null
+\cleardoublepage
 }
 
 
-\newcommand\listsymbolname{List of Symbols}
+\newcommand\listsymbolname{Nomenclature}
 \usepackage{longtable}
 \newcommand\listofsymbols[2]{
 \btypeout{\listsymbolname}
@@ -331,6 +340,7 @@
       \@mkboth{
           \MakeUppercase\listsymbolname}{\MakeUppercase\listsymbolname}}
 \begin{longtable}[c]{#1}#2\end{longtable}\par
+\null
     \cleardoublepage
 }
 
@@ -387,7 +397,6 @@
 % \vfil\vfil\null
 % \cleardoublepage
 % }
-
 
 \newcommand\dedicatory[1]{
 \btypeout{Dedicatory}
